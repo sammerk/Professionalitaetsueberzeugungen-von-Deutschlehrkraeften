@@ -1,0 +1,225 @@
+---
+title: "Word Embeddings"
+---
+
+
+## Import scientific usefiles
+```{r}
+#| cache: true
+library(haven)
+library(tidyverse)
+data <- read_sav("../_data/data_suf.sav") %>% 
+  mutate(across(starts_with("PUe"), function(x) ifelse(x %in% c(-1, -9), NA, x)),
+         spezifität = factor(ifelse(spezifität == 1, "Fachdidaktik", "Global")))
+```
+
+
+## Compose string with items and answers
+```{r}
+#| cache: true
+items2 <- 
+  c("BB1_SH1" = "identifiziert über das gesamte Berufsleben hinweg individuelle Entwicklungsbedarfe.", 
+    "BB3_SH2" = "ist sensibel für die Notwendigkeit, im Beruf fortwährend selbst hinzuzulernen.", 
+    "BB4_SH3" = "stellt sich immer wieder die Frage, in welcher Weise ihre eigenen Erfahrungen als Schülerin oder Schüler ihre Sicht auf den, Beruf prägen.", 
+    "ST3_SH4" = "sieht ihre Aufgabe darin, die schulischen und persönlichen Krisen ihrer Schülerinnen und Schüler wahrzunehmen und einfühlsam, damit umzugehen.",
+    "ST4_SH5" = "weiß um die Bedeutung ihres Handelns für die Biografie der Schülerinnen und Schüler auch über den Unterricht hinaus.", 
+    "KO4_SH6" = "ist von lernförderlichen Konzepten des Lehrens und Lernens überzeugt, die wissenschaftlich belegt sind.",
+    "MR1_SH7" = "ist in der Lage zu hinterfragen, wie sie ihren eigenen Unterricht analysiert und bewertet.",
+    "KO1_AW1" = "verfügt über fachliches Wissen als Voraussetzung für den Wissenserwerb ihrer Schülerinnen und Schüler.", 
+    "KO2_AW2" = "verfügt über fachdidaktische Fähigkeiten, um den Lernerfolg ihrer Schülerinnen und Schüler wahrscheinlicher zu machen.",
+    "KO3_AW3" = "kann ihre Absichten durch zielgerichtetes Handeln im Unterricht verwirklichen.", 
+    "ST1_RH1" =  "weiß um die Ungewissheit des Erfolges ihres Handelns im Beruf.",
+    "ST2_RH2" = "erkennt, dass berufliche Situationen Widersprüche und Spannungen für das eigene Handeln mit sich bringen.", 
+    "MR4_RH3" = "ist sich bewusst, dass es in der Wissenschaft widersprüchliche Sichtweisen auf Schule und Unterricht gibt, die nicht aufgelöst, werden können.",
+    "BB2_OO1" = "erkennt, dass mit beruflichen Übergängen (z.B. vom Referendariat in den Beruf) besondere Herausforderungen einhergehen.",
+    "MR2_OO2" = "ist in der Lage, ihre Handlungsentscheidungen zu begründen und die Grenzen dieser Begründungen zu kennen.", 
+    "MR3_OO3" = "ist sich bewusst, dass es bei der Deutung von Handlungssituationen Alternativen gibt, die gleichermaßen sinnvoll sein können.")
+
+items_and_answers <- 
+  c(items2, 
+    data$PU01_01, 
+    data$PU01_02, 
+    data$PU01_03)
+```
+
+
+## SBERT Embeddings
+```{r}
+#| eval: false
+library(text)
+model_string <- "T-Systems-onsite/german-roberta-sentence-transformer-v2"
+
+embeddings_all <- 
+  textEmbed(
+    as.character(
+      items_and_answers)[items_and_answers != ""], 
+    model = model_string)
+
+embeddings_all_mat <- as.matrix(embeddings_all$texts$texts)
+embeddings_all_similarity <- embeddings_all_mat / sqrt(rowSums(embeddings_all_mat * embeddings_all_mat))
+embeddings_all_similarity <- embeddings_all_similarity %*% t(embeddings_all_similarity)
+
+similarities_to_items <- 
+  as_tibble(embeddings_all_similarity[,1:16]) %>% 
+  rename_all(~names(items2))
+
+PIDs_mit_nichtleeren_offenen_Antworten <- 
+  data %>% 
+  select(CASE, PU01_01, PU01_02, PU01_03) %>%
+  gather(-CASE, key = "item", value = "answer") %>% 
+  filter(answer != "") %>% 
+  pull(CASE)
+
+data_grosberta_embeddings <- 
+  similarities_to_items %>% 
+  mutate(PID = c(names(items2), PIDs_mit_nichtleeren_offenen_Antworten)) %>% 
+    gather(-PID, key = "item", value = "similarity") %>% 
+    mutate(apriori_faktor = str_sub(item, 1, 2),
+           aposteriori_faktor = str_sub(item, 5, 6)) %>% 
+    filter(!(PID %in% names(items2))) # item zu item Ähnlichkeiten entfernen
+
+write_csv(data_grosberta_embeddings, "_data/data_grosberta_embeddings.csv")
+```
+
+
+## OpenAI Embeddings
+```{r}
+#| eval: false
+library(httr)
+embeddings_url <- "https://api.openai.com/v1/embeddings"
+auth <- 
+  add_headers(Authorization = paste("Bearer", "xxx"))
+body <- list(model = "text-embedding-ada-002", input =  items_and_answers[items_and_answers != ""])
+
+
+resp <- POST(
+  embeddings_url,
+  auth,
+  body = body,
+  encode = "json"
+)
+
+embeddings <- content(resp, as = "text", encoding = "UTF-8") %>%
+  jsonlite::fromJSON(flatten = TRUE) %>%
+  pluck("data", "embedding")
+
+
+embeddings_all_mat <- 
+  matrix(unlist(embeddings), ncol = 1536, byrow = TRUE)
+
+embeddings_all_similarity <- embeddings_all_mat / sqrt(rowSums(embeddings_all_mat * embeddings_all_mat))
+embeddings_all_similarity <- embeddings_all_similarity %*% t(embeddings_all_similarity)
+
+similarities_to_items <- 
+  as_tibble(embeddings_all_similarity[,1:16]) %>% 
+  rename_all(~names(items2))
+
+data_openai_embeddings <- 
+  similarities_to_items %>% 
+  mutate(PID = c(names(items2), PIDs_mit_nichtleeren_offenen_Antworten)) %>% 
+    gather(-PID, key = "item", value = "similarity") %>% 
+    mutate(apriori_faktor = str_sub(item, 1, 2),
+           aposteriori_faktor = str_sub(item, 5, 6)) %>% 
+    filter(!(PID %in% names(items2))) %>%  # item zu item Ähnlichkeiten entfernen
+  left_join(data %>% 
+              select(CASE, spezifität) %>% 
+              rename(PID = CASE) %>% 
+              mutate(PID = as.character(PID)))
+
+write_csv(data_openai_embeddings, "_data/data_openai_embeddings.csv")
+save(similarities_to_items, file = "_data/similarities_to_items.RData")
+```
+
+
+## Interaktive Visualisierung 
+
+```{r}
+#| message: false
+#| warning: false
+library(reactablefmtr)
+library(tidyverse)
+library(htmlwidgets)
+library(htmltools)
+library(tippy)
+load("../_data/similarities_to_items.RData")
+data_reactable <- 
+  similarities_to_items[-c(1:16),] %>% 
+  as_tibble() %>% 
+  mutate(Antwort = items_and_answers[-c(1:16)][items_and_answers[-c(1:16)] != ""]) %>% 
+  mutate_if(is.numeric, function(x) (round((x - mean(x))/sd(x), 2))) %>% 
+  relocate(Antwort)
+names(data_reactable) <- c("Antwort", substr(names(data_reactable[2:17]), 1, 3))
+
+
+with_tooltip <- function(value, tooltip, ...) {
+  div(tippy(value, tooltip, ...))
+}
+
+items3 <- items2
+names(items3) <- substr(names(items2), 1, 3)
+
+rendered_reactable <- data_reactable %>% 
+  relocate(Antwort, 
+           KO1, KO2, KO3, KO4,
+           ST1, ST2, ST3, ST4,
+           BB1, BB2, BB3, BB4,
+           MR1, MR2, MR3, MR4) %>% 
+  #rename(`KO1?` = KO1) %>% 
+  reactable(
+    defaultColDef = colDef(style = color_scales(data_reactable)),
+    columns = list(Antwort = 
+                     colDef(width = 400,
+                            sticky = "left",
+                            style = list(borderRight = "1px solid #eee")
+                            ),
+                   KO1 = colDef(header = with_tooltip("KO1", items3["KO1"])),
+                   KO2 = colDef(header = with_tooltip("KO2", items3["KO2"])),
+                   KO3 = colDef(header = with_tooltip("KO3", items3["KO3"])),
+                   KO4 = colDef(header = with_tooltip("KO4", items3["KO4"])),
+                   
+                   ST1 = colDef(header = with_tooltip("ST1", items3["ST1"])),
+                   ST2 = colDef(header = with_tooltip("ST2", items3["ST2"])),
+                   ST3 = colDef(header = with_tooltip("ST3", items3["ST3"])),
+                   ST4 = colDef(header = with_tooltip("ST4", items3["ST4"])),
+                   
+                   BB1 = colDef(header = with_tooltip("BB1", items3["BB1"])),
+                   BB2 = colDef(header = with_tooltip("BB2", items3["BB2"])),
+                   BB3 = colDef(header = with_tooltip("BB3", items3["BB3"])),
+                   BB4 = colDef(header = with_tooltip("BB4", items3["BB4"])),
+                   
+                   MR1 = colDef(header = with_tooltip("MR1", items3["MR1"])),
+                   MR2 = colDef(header = with_tooltip("MR2", items3["MR2"])),
+                   MR3 = colDef(header = with_tooltip("MR3", items3["MR3"])),
+                   MR4 = colDef(header = with_tooltip("MR4", items3["MR4"]))
+                   ),
+    defaultSorted = list(KO1 = "desc"),
+    defaultSortOrder = "desc",
+    showPageSizeOptions = TRUE,
+    style = list(maxWidth = 920),
+  ) %>% 
+  google_font(font_family = "Source Sans Pro")
+```
+
+Interactive table output
+```{r}
+#| label: tbl-Antwort-Item-Ähnlichkeit
+#| tbl-cap: z-transformierte Ähnlichkeiten der offenen Antworten zu den Items (ST = strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz, KO = kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz). 
+#| cache: true
+htmlwidgets::prependContent(
+  rendered_reactable,
+  htmlDependency(
+    name = "font-awesome",
+    version = "6.7.2",
+    src = "/Users/samuelmerk/Nextcloud/PubConfTalks/PubConfTalks2024/Pub24/02_Notyet_submitted/Professionalitaetsueberzeugungen-von-Deutschlehrkraeften/_notebooks/fontawesome-free-6.7.2-web",
+    script = "js/all.min.js",
+    stylesheet = "css/all.min.css"
+  ),
+  htmltools::tags$style(HTML(
+        '.tippy:after {
+          font-family: "Font Awesome 6 Free";
+          content: " \\f059";
+          }'
+    )
+  )
+)
+```

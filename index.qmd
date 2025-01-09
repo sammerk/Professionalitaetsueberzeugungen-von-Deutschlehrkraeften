@@ -1,0 +1,760 @@
+---
+title: Was kennzeichnet Professionalität in der Deutsch-Fachdidaktik (Sprache)? 
+subtitle: Analysen offen und geschlossen erfasster Überzeugungen von Deutschlehrkräften.
+authors: 
+  - name        : Anonymisert
+    orcid       : 0000-0000-0000-0000
+    affiliation  : 1
+    roles: 
+      - conceptualization
+      - data curation
+      - formal analysis
+      - funding acquisition
+      - investigation
+      - methodology
+      - project administration
+      - resources
+      - supervision
+      - validation
+      - visualization
+      - writing
+      - editing
+    corresponding : true
+  - name        : Anonymisert
+    orcid       : 0000-0000-0000-0000
+    affiliation : 2, 3
+    roles: 
+      - editing
+affiliation:
+  - id          : 1
+    institution : Anonymisert
+  - id          : 2
+    institution : Anonymisert
+  - id          : 3
+    institution : Anonymisert
+abstract: |
+  "Professionalität" von Lehrkräften wird einerseits bildungswissenschaftlich theoretisiert und modelliert (z.B. im sog. kompetenzorientierten oder im strukturtheoretischen Ansatz), andererseits haben Lehrkräfte Überzeugungen bzgl. der Frage, was Professionalität in ihrem Beruf ausmacht. Der vorliegende Beitrag untersucht, inwiefern diese Überzeugungen den  bildungswissenschaftlichen Ansätzen ähnlich sind und ob sie spezifisch für einen fachdidaktischen Kontext sind. In einem faktorenanalytischen Ansatz zeigten sich Überzeugungen zu Professionalität in der Fachdidaktik Deutsch als metrisch invariant gegenüber allgemeiner Professionalitätsüberzeugungen, wichen jedoch substantiell von der a priori Struktur der bildungswissenschaftlichen Ansätze ab. Word Embeddings von Freitextantworten zeigten jedoch gleichzeitig eine Korrespondenz zu der bildungswissenschaftlich implizierten Gliederung. Inwiefern aus diesen Befunden auf eine kognitive Repräsentation bildungswissenschaftlicher Professionalitätsansätze in den Überzeugungen von Lehrkräften geschlossen werden kann, wird diskutiert.
+plain-language-summary: |
+  Was macht eine professionelle Lehrkraft aus? Fachwissen? Oder Wissen über Didaktik? Oder dass Sie regelmäßig zu Fortbildungen geht? Wir alle haben individuelle Vorstellungen zu einer professionellen Lehrkraft und die Erziehungswissenschaftlerinnen und Erziehungswissenschaftler haben dazu geforscht. Dieser Artikel untersucht, inwiefern die wissenschaftlichen Vorstellungen auch bei Lehrkräften vorkommen und ob Lehkräfte denken, dass eine professionelles **Deutsch**-Lehrkaft durch andere Merkmale gekennzeichnet ist als eine professionelle Lehrkraft im Allgemeinen. Beide Fragen beantwortet die vorliegende Studie mit "sowohl auch auch": Die Vorstellungen der Lehrkräfte enthalten durchaus auch die wissenschaftlichen Überlegungen zu Professionalität von Lehrkräften aber darüber hinaus noch einiges anderes. Außerdem sind die Antworten auf die Fragen "Was macht eine professionelle Lehrkaft aus?" und "Was macht eine professionelle Lehrkaft in der Deutschdidaktik aus?" recht ähnlich aber es kommen z.B. auf die erste Frage hin mehrere Antworten die sich mit den wissenschaftlichen Vorstellungen zu professionalität decken.
+keywords:
+  - Professionalität
+  - Fachdidaktik
+  - Lehrpersonenbildung
+  - Natural Language Processing
+date: last-modified
+lang: de
+bibliography: references.bib
+---
+
+## Einleitung (3k)
+
+Die bildungswissenschaftliche Forschung hat sich intensiv mit der Frage nach der Professionalität von Lehrkräften auseinandergesetzt und dabei diverse, oft komplementäre Theorien und Konzepte generiert [@cramer2023]. Während z.B. soziologisch inspirierte Arbeiten für die Profession charakteristische Antinomien identifizierten, topologisierten Arbeiten aus der pädagogischen Psychologie Wissensbestände, Überzeugungen und motivationale Variablen, die sich in der Literatur als prädiktiv für Outcomes auf Ebene der Schülerinnen und Schüler zeigten [@baumert2006; @krauss2004; @shulman1986]. Weitere Forschungsstränge bearbeiteten etwa in der Tradition erziehungswissenschaftlicher Biografieforschung [@bauer2000; @terhart1992] die besondere Bedeutung von berufsbiografischen Übergängen und fassten Professionalität unter anderem als Sensibilität für die Bedeutung der eigenen Biografie und das kontinuierliche Bewältigen aktueller berufsbiografischer Herausforderungen auf. Die Frage nach Professionalität im Lehrerinnen- und Lehrerberuf hat auch Eingang in die Bildungsstandards der Ständigen Konferenz der Kultusminister der Länder in der Bundesrepublik Deutschland gefunden. Dementsprechend werden an Universitäten und pädagogischen Hochschulen die zuvor genannten bildungswissenschaftlichen Professionalitätsansätze gelehrt [@hohenstein2014]. Es kann jedoch begründet angenommen werden, dass Lehrkräfte in diesen Lernsituationen umfangreiche, bereits bestehende implizite wie explizite Überzeugungen [@fives2012; @merk2020] bzgl. der Frage der Professionalität einbringen. Dies hätte Konsequenzen für die Professionalisierungspraxis [@cramer2023], da diese Überzeugungen etwa über die ihnen zugeschriebene Filter-, Rahmungs- und Handlungsleitungsfunktionen [@fives2012] dazu führen können, dass (angehende) Lehrkräfte bestimmte Lerngelegenheiten unterschiedlich wählen und nutzen. Dementsprechend liegt erste Forschung vor, die untersucht, inwiefern Überzeugungen zur Professionalität von Lehrkräften in ihrer Struktur den bildungswissenschaftlichen Theorien entspricht, wobei die Ergebnisse sowohl auf Ähnlichkeiten und Abweichungen zwischen Überzeugungsstruktur und Theorien hinweisen [@cramer2023]. Die Ambiguität dieser Ergebnisse, deren unklare Generalisierbarkeit sowie die grundsätzliche Diskussion um die Erfassbarkeit von Überzeugungen zu Professionalität mit geschlossenen Fragebogenitems [@merk2023] nimmt die vorliegende Studie zum Anlass um a) zu versuchen, die von Cramer et al. [-@cramer2023] gefundene Faktorenstruktur der Professionalitätsüberzeugungen domänenspezifisch zu replizieren b) die Faktorenstruktur von allgemeinen Professionalitätsüberzeugungen und Professioalitätsüberzeugungen in der Fachdidaktik zu vergleichen und b) die Ähnlichkeit des Inhalts von offen erfassten Überzeugungen und bildungswissenschaftlichen Theorien zur Professionalität von Lehrerinnen und Lehrern mit Natural Language Processing Methoden [@bittermann2024] zu untersuchen.
+
+## Theoretischer Hintergrund (8K)
+
+### Professionalität von Lehrkräften {#sec-professionalitat-von-lehrkraften}
+
+In den Bildungswissenschaften ist in den letzten zwei Dekaden eine lebendige, teils auch kontroverse Diskussion um die Charakteristika professionellen Handelns im Lehrerberuf zu verzeichnen, die verschiedene Ansätze zur Beschreibung von Professionalität hervorgebracht hat, welche im Folgenden beschrieben werden sollen.
+
+#### Strukturtheoretischer Ansatz
+
+Ausgehend von soziologisch geprägten Arbeiten Oevermanns [-@oevermann1996] wirft der strukturtheoretische Ansatz der Professionalität von Lehrkräften ein besonderes Augenmerk auf die beruflichen Rahmenbedingungen von Lehrerinnen und Lehrern wie etwa Rollenerwartungen oder soziale Gefüge [@helsper2014]. In der Rezeption dieses Ansatzes haben sogenannte "Antinomien" oder "professionelle Paradoxien" des Lehrerinnen- und Lehrerberufes besondere Aufmerksamkeit erfahren [@baumert2006]. Sie beschreiben nicht auflösbare, aber charakteristische Widersprüche in den professionellen Anforderungen wie etwa die simultane Erfordernis von Nähe und Distanz zwischen Lehrkräften und Schülerinnen und Schülern.
+
+#### Kompetenzorientierter Ansatz
+
+Der kompetenzorientierte Ansatz hingegen versucht, Wissensbestände, Überzeugungen, motivationale Orientierungen und selbstregulative Fähigkeiten von Lehrkräften zu systematisieren, die ein erfolgreicheres Handeln wahrscheinlicher machen. Dabei wird Erfolg meist als gesteigerte (operationaliserbare) Outcomes auf Ebene der Schülerinnen und Schüler definiert, wie z.B. deren akademische Leistung oder Motivation. Diese Systematisierung steht in der Tradition der Wissenstopologie Shulmans [-@shulman1986] und des Expertiseansatzes der Lehrerprofessionalität [@bromme1992]. Häufig zitiert werden Topologien, welche die für professionelle Kompetenz konstitutiven Wissensdomänen Fachwissen, Fachdidaktisches Wissen, Pädagogisches Wissen, Organisationales Wissen und Beratungswissen jeweils in disjunkte Subdomänen unterteilen [@baumert2006; @konig2020; @krauss2004]
+
+#### Berufsbiografischer Ansatz
+
+In der Tradition erziehungswissenschaftlicher Biografieforschung fokussieren Arbeiten die dem berufsbiografischen Ansatz zugeordnet werden (z.B. Bauer, 2000a; Terhart, 2001) [@bauer2000; @terhart2001] eine stark intraindividuelle Perspektive: Sie betonen, dass Professionalität von Lehrerinnen und Lehrern als "berufsbiographisches Entwicklungsproblem" zu sehen sei [@terhart1995c, pp. 238] und leiten daraus die Notwendigkeit einer Sensibilität für die eigene Berufsbiografie, einer besonderen Berücksichtigung beruflicher Übergänge (etwa zu Beginn des Referendariats) oder des Aufbaus eines beruflichen Selbsts ab.
+
+#### Metareflexiver Ansatz
+
+Die bisher genannten Ansätze haben (neben weiteren) längst Eingang in die institutionalisierte Lehrkräftebildung gefunden. Dies nahmen Cramer et al. [-@cramer2019] zum Anlass, Professionalität als mehrperspektivische Betrachtung des eigenen Handelns unter Berücksichtigung aller drei bisher genannter Ansätze sowie deren Unterschiede und Gemeinsamkeiten zu definieren. Danach rekurrieren professionelle Lehrkräfte beim Treffen von Entscheidungen auf Handlungsoptionen, die im Lichte adäquat erscheinen. Dabei reflektieren sie verschiedene Handlungsoptionen nicht nur mehrperspektivisch entlang verschiedener situationsadäquater Theorien und Konzepte, sondern auch deren terminologische Differenzen und differentielle Axiomatiken [@cramer2023a].
+
+## Überzeugungen von Lehrkräften
+
+Überzeugungen von Lehrkräften sind ein beliebter Forschungsgegenstand [@fives2019; @pajares1992; @skott2015] in der Lehrerinnen- und Lehrerbildungsforschung. Überzeugungen werden zum einen als sehr wirkmächtig konzeptualisert - ihnen wird etwa eine Filter- Rahmungs- und Handlungsleitungsfunktion zugeschrieben [@fives2019]. Andererseits gelten sie als vergleichsweise ökonomisch via Fragebogen erfassbar [@merk2020]. Da Überzeugungen meist als subjektive Wahrheitspropositionen definiert werden [@skott2015], liegt es nahe, die Forschung zu Überzeugungen von Lehrerinnen und Lehrern nach dem Gegenstandsbereich der Wahrheitspropositionen zu gliedern: Also etwa lehr- lerntheoretische Überzeugungen [@dubberke2008; @turner2009; @reusser2014], epistemische Überzeugungen [@blömeke2008; @fives2008; @hofer2012], Überzeugungen zu heterogenen Lerngruppen [@gebauer2013] oder eben Überzeugungen zur Professionalität von Lehrkräften [@cramer2023]. Überzeugungen zu verschiedenen Gegenstandsbereichen gelten jedoch als teilweise abhängig voneinander, wenngleich nicht notwendigerweise konsistent: So weisen Lehrkräfte die hochgradig transmissive Lerntheoretische Überzeugungen für das Fach Mathematik aufweisen auch eher transmissive Lerntheoretische Überzeugungen für das Fach Physik auf (Abhängigkeit), gleichzeitig gibt es Evidenz dafür, dass Lehrkräfte davon überzeugt sind, dass es wichtig ist ihre Praxis durch bildungswissenschaftliche Forschungsergebnisse zu informieren, ohne dies jedoch auch umzusetzen [@gold2024; @walker2019]. Für diese Domänenspezifität und Kontextabhängigkeit von Überzeugungen liegen (insbesondere für epistemische Überzeugungen) umfassende Rahmenmodelle vor [@merk2017; @muis2006].
+
+### Professionalitätsüberzeugungen von Lehrkräften
+
+Empirische Forschung zu Überzeugungen von Lehrkräften bzgl. Professionalität in ihrem Beruf ist im Vergleich zu Forschung zu Überzeugungen bzgl. den anderen zuvor genannten Gegenstandsbereichen eher selten. Es existiert zwar internationale Forschung zu Überzeugungen bzgl. "teachers’ knowledge and ability" [@fives2008], "teacher identity" [@zembylas2015], "collective beliefs" [@tschannen-moran2015] und mit Bezug auf aktuelle bildungspolitische Entwicklungen [@Bell2011]. Jedoch sind die im vorherigen Abschnitt vorgestellten Theorien der Lehrerinnen- und Lehrerprofessionalität hauptsächlich im deutschsprachigen Kontext prominent, so dass die Seltenheit empirischer Forschung bzgl. Überzeugungen hierzu nicht überrascht. Eine Ausnahme davon stellt die Arbeit von Cramer et al. [-@cramer2023] dar. Dort wurde einer vergleichsweise repräsentativen Stichprobe von Lehrkräften eine Batterie von 16 Likertitems vorgelegt, die die Zustimmung zu jeweils einem zentralen Aspekt eines der vier zuvor vorgestellten Ansätze erfasst (z.B. *Eine professionelle Lehrperson identifiziert über das gesamte Berufsleben hinweg individuelle Entwicklungsbedarfe*/*Eine professionelle Lehrperson ist sensibel für die Notwendigkeit, im Beruf fortwährend selbst hinzuzulernen* \[berufsbiografischer Ansatz\]; *Eine professionelle Lehrperson verfügt über fachliches Wissen als Voraussetzung für den Wissenserwerb ihrer Schülerinnen und Schüler*/*Eine professionelle Lehrperson ist von lernförderlichen Konzepten des Lehrens und Lernens überzeugt, die wissenschaftlich belegt sind* \[kompetenzorientierter Ansatz\]). Diese Items wurden im Zuge der Skalenentwicklung inhaltlich mit Expertinnen und Experten validiert und kognitiven Prätests unterzogen. Konfirmatorische Faktorenanalysen zeigten eine Überlegenheit einer vierdimensionalen Einfachstruktur, bei der jedes Item auf dem ihm a priori zugewiesenen Faktor (Professionalitätsansatz) lud, gegenüber einer einfaktoriellen Lösung. Jedoch lagen inkrementelle wie absolute (globale) Fitmaße unter einschlägigen Benchmarks. Daher führten Cramer et al. [-@cramer2023] im Anschluss eine explorative Faktorenanalyse durch, die drei Faktoren ergab. Diese wurden Professionalität als schulisches Handeln, Professionalität als Anwendbarkeit von Wissen und Können und Professionalität als reflexive Haltung genannt. Diese dreidimensionale a posteriori beschriebene Struktur, ist der a priori postulierten Struktur noch ähnlich, da sie nur durch Vertauschung von 6 (inhaltlich sehr plausiblen) Items aus der a priori angenommenen Struktur entsteht (Adjusted Rand Index .29). Unabhängig davon bleibt jedoch unklar, inwiefern das Instrument von Cramer et al. [-@cramer2023] Professionalitätsüberzeugungen exhaustiv erfasst, wie domänenspezifisch diese sind und ob sie tatsächlich explizit bei den Befragten kognitiv repräsentiert sind [@merk2023]: So sind die Ergebnisse auch mit der Annahme vereinbar, dass Lehrkräfte intuitiv Professionalität völlig unähnlich zu den Bildungswissenschaften fassen, den bildungswissenschaftlichen Überlegungen das erste Mal beim Beantworten des Fragebogen begegnen und daher das Instrument von Cramer et al [-@cramer2023] eher spontane Urteilsbildungen erfasst als bestehende Überzeugungen. Die vorliegende Studie möchte zur Aufklärung dieser Unklarheiten beitragen, indem sie Professionalitätsüberzeugungen von Lehrkräften zunächst mit einem offenen Item und anschließend mit dem Instrument von Cramer et al [-@cramer2023] erfasst.
+
+## Forschungsfragen und Hypothesen
+
+### Forschungsfrage 1 (explorativ, präregistriert)
+
+Spiegeln sich die bildungswissenschaftlichen Professionalitätsansätze in den frei formulierten domänenspezifischen Professionalitätsüberzeugungen? Wir haben diesbezüglich keine a priori Hypothesen aufgestellt (explorative Forschungsfrage) und daher auch keine Hypothesen präregistriert.
+
+### Forschungsfrage 2 (konfirmatorisch, präregistriert)
+
+Lässt sich die von Cramer et al [-@cramer2023] gefundene Faktorenstruktur domänenspezifisch für die Fachdidaktik Deutsch (Sprache) replizieren? Wir erwarten, dass die von Cramer et al [-@cramer2023] gefundene Faktorenstruktur einer eindimensionalen Faktorenlösung und einer vierdimensionalen Faktorenlösung, die die a priori Strukturierung der Items entlang der vier prominenten Professionalisierungsansätze widerspiegelt, überlegen ist.
+
+### Forschungsfrage 3 (konfirmatorisch, nicht präregistriert)
+
+Unterscheiden sich offen und geschlossen erfasste Überzeugungen zur Professionalität in der Deutschdidaktik (Sprache) von Überzeugungen zur Professionalität im Lehrerinnen- und Lehrerberuf im allgemeinen (Domänenspezifität)? Basierend auf einschlägigen Rahmenmodellen und empirischen Befunden gehen wir von kleinen Unterschieden in Struktur- und Ausprägung der Überzeugungen aus.
+
+## Methode (4K)
+
+### Stichprobe
+
+```{r}
+library(flextable)
+library(patchwork)
+library(papaja)
+library(lavaan)
+library(lavaanExtra)
+library(semTools)
+library(tinytable)
+library(sjPlot)
+library(haven)
+library(hrbrthemes)
+library(semoutput)
+library(brms)
+library(ggforce)
+library(moments)
+library(tidyverse)
+extrafont::loadfonts(quiet = TRUE)
+```
+
+```{r}
+data <- read_sav("_data/data_suf.sav") %>% 
+  mutate(across(starts_with("PUe"), function(x) ifelse(x %in% c(-1, -9), NA, x)),
+         spezifität = factor(ifelse(spezifität == 1, "Fachdidaktik", "Global")),
+         PID = CASE)
+
+# Stichprobengrößen
+n1 <- data %>% filter(spezifität == "Fachdidaktik") %>% nrow()
+n2 <- data %>% filter(spezifität == "Global") %>% nrow()
+
+# Anteil weiblich
+proz_weibl_n1 <- 
+  data %>% 
+  filter(BG22 == 1 & spezifität == "Fachdidaktik") %>%
+  nrow() / data %>% filter(spezifität == "Fachdidaktik") %>% nrow() * 100
+proz_weibl_n2 <- 
+  data %>% 
+  filter(BG22 == 1 & spezifität == "Global") %>%
+  nrow() / data %>% filter(spezifität == "Global") %>% nrow() * 100
+  
+# Anteil Dienst < 11J
+proz_djkl11_n1 <- 
+  data %>% 
+  filter(BG19  < 3 & spezifität == "Fachdidaktik") %>%
+  nrow() / data %>% filter(spezifität == "Fachdidaktik") %>% nrow() * 100
+proz_djkl11_n2 <- 
+  data %>% 
+  filter(BG19 < 3 & spezifität == "Global") %>%
+  nrow() / data %>% filter(spezifität == "Global") %>% nrow() * 100
+  
+# Anteil Dienst > 20J
+proz_djkl20_n1 <- 
+  data %>% 
+  filter(BG19  == 5 & spezifität == "Fachdidaktik") %>%
+  nrow() / data %>% filter(spezifität == "Fachdidaktik") %>% nrow() * 100
+proz_djkl20_n2 <- 
+  data %>% 
+  filter(BG19 == 5 & spezifität == "Global") %>%
+  nrow() / data %>% filter(spezifität == "Global") %>% nrow() * 100
+  
+# Anteil MINT  
+proz_mint_n1 <- 
+  data %>% 
+  filter(BG21_02  == 1 & spezifität == "Fachdidaktik") %>%
+  nrow() / data %>% filter(spezifität == "Fachdidaktik") %>% nrow() * 100
+proz_mint_n2 <- 
+  data %>% 
+  filter(BG21_02  == 1 & spezifität == "Global") %>%
+  nrow() / data %>% filter(spezifität == "Global") %>% nrow() * 100
+```
+
+Forschungsfragen 1 und 2 wurden mit Daten von $N_1 =$ `{r} n1` Deutschlehrkräften (Stichprobe 1: `{r} round(proz_weibl_n1, 1)`% weiblich, `{r} round(proz_djkl11_n1, 1)`% weniger als 11 Dienstjahre, `{r} round(proz_djkl20_n1, 1)`% mehr als 20 Dienstjahre, `{r} round(proz_mint_n1, 1)`% mindestens ein MINT-Fach) aus Deutschland beantwortet. Diese wurden aus einem Panel eines Felddienstleisters rekrutiert. Für die Bearbeitung von Forschungsfrage 3 weitere $N_2 =$ `{r} n2` Deutschlehrkräfte (Stichprobe 2: `{r} round(proz_weibl_n2, 1)`% weiblich, `{r} round(proz_djkl11_n2, 1)`% weniger als 11 Dienstjahre, `{r} round(proz_djkl20_n2, 1)`% mehr als 20 Dienstjahre, `{r} round(proz_mint_n2, 1)`% mindestens ein MINT-Fach) aus demselben Panel rekrutiert. Die Größe von Stichprobe 1 wurde a priori anhand einer Simulationsstudie ([siehe reproduierbarer Code](Externer%20LINK)) determiniert. Die Größe von Stichprobe 2 war nicht a priori geplant und durch Projektressourcen pragmatisch limitiert [@lakens2022].
+
+### Instrument
+
+In beiden Stichproben wurden zunächst die Professionalitätsüberzeugungen der befragten Deutschlehrkräfte mit einem offenen Item erfasst (Wortlaut Stichprobe 1: "*Wir interessieren uns nun dafür, was Ihrer Ansicht nach »Professionalität« in der Deutsch-Fachdidaktik (Sprache) ausmacht. Bitte antworten Sie in ganzen Sätzen um Missverständnisse zu vermeiden und formulieren Sie möglichst drei Aspekte. Eine »professionelle« Lehrperson in der Deutsch-Fachdidaktik (Sprache) ...*, Wortlaut Stichprobe 2: "*Wir interessieren uns nun dafür, was Ihrer Ansicht nach »Professionalität« einer Lehrperson ausmacht. Bitte antworten Sie in ganzen Sätzen um Missverständnisse zu vermeiden und formulieren Sie möglichst drei Aspekte. Eine »professionelle« Lehrperson ...*"). Danach wurde den Lehrkräften das Instrument von Cramer et al [-@cramer2023]vorgelegt. In Stichprobe 1 (domänenspezifische Überzeugungen) lautete der Itemstamm "*Eine professionelle Lehrperson in der Deutsch-Fachdidaktik (Sprache) ...*", während in Stichprobe zwei der originale Itemstamm ("*Eine professionelle Lehrperson ...*") zur Erfassung globaler Professionalitätsüberzeugungen beibehalten wurde. In beiden Stichproben wurden die 16 Originalitems verwendet. Davon zielen jeweils vier auf die Erfassung der Überzeugungen eines der zuvor geschilderten bildungswissenschaftlichen Ansätze der Professionalität von Lehrkräften (siehe @sec-wortlaut-der-items).
+
+## Statistische Modellierung
+
+### Word Embeddings und Ähnlichkeitsanalyse {#sec-word-embeddings}
+
+Da Forschungsfrage 1 sich für das Vorkommen der Ideen bildungswissenschaftlicher Professionalitätsansätze in den spontan geäußerten Professionalitätsüberzeugungen in Freitextantworten interessiert, wurden zunächst Sentence Embeddings [@reimers2019] sowohl aller drei Antworten der Befragten, als auch aller geschlossener 16 Likertitems in zwei große prätrainierte Transformermodelle [Ger-RoSBERTa, @reimers2019; text-embedding-ada-002 @greene2024] vorgenommen. Unabhängig von der spezifischen Architektur der jeweiligen Modelle ist deren zentrales Konzept, die semantische Kernaussage eines Satzes als Vektor in einem hochdimensionalen Raum zu repräsentieren [@reimers2019]. Die semantische Ähnlichkeit zweier Sätze - also zum Beispiel der Freitextantwort "Eine Lehrkraft ist in der Fachdidaktik Deutsch dann professionell, wenn sie fundierte, sicher anwendungsbereite Kenntnisse in Grammatik, Rechtschreibung, Ausdruck, Textsorten, Epochen und Werkkenntnissen hat" und des Items "Eine professionelle Lehrperson verfügt über fachliches Wissen als Voraussetzung für den Wissenserwerb ihrer Schülerinnen und Schüler" kann dann als Winkel zwischen diesen beiden Vektoren quantifiziert werden [@kjell2023]. Dementsprechend wurden vorliegend alle Ähnlichkeiten von allen offenen Antworten zu allen Items berechnet. Diese Ähnlichkeiten stellten dann die abhängige Variable in einer bayesianischen Mehrebenenregression für beta-verteilte Variablen dar, welche dann mit Dummyvariablen der entsprechenden bildungswissenschaftlichen Ansätze (des betreffenden Items) prädiziert wurden. Nimmt man an, dass die geschlossenen Items jeweils den entsprechenden bildungswissenschaftlichen Ansätz repräsentieren, müsste das Embedding einer Freitextantwort, die z.B. einer kompetenzorientierten Professionalitätsüberzeugung entspricht, ähnlicher zu allen vier kompetenzorientierten Items sein, als zu den Embeddings der restlichen Items.
+
+### Faktorenanalysen {#sec-faktorenanalysen}
+
+Um die Faktorenstruktur der 16 geschlossenen Items zu evaluieren, wurde wie präregistriert vorgegangen: Es wurde ein eindimensionales Modell, ein vierdimensionales Modell das die a priori Struktur (strukturtheoretischer, kompetenzorientierter, berufsbiografischer und metareflektiver Ansatz)-beinhaltet und ein vierdimensionales Modell das die empirisch von Cramer et al. [-@cramer2023] gefundene Struktur a posteriori Struktur abbildet spezifiziert (jeweils mit $$\tau$$-kongenerischen Messmodellen). Die Modellanpassungsgüte wurde dann wie präregistriert anhand des $\chi^2$-Wertes, des Confirmatory Fit Indexes (CFI), des Root Mean Square Error of Approximation (RMSEA), den Standardized Root Mean Square Residuals (SRMR), dem Bayesian Information Criterion (BIC) und dem Akaike Information Criterion (AIC) verglichen (siehe Präregistrierung). Um die nicht präregistrierte Forschungsfrage 3 zu beantworten, wurden die Autoren der Originalstudie für die Möglichkeit einer Sekundäranalyse angefragt. Nach Erhalt der Daten wurden diese mit der vorliegenden Stichprobe zusammengelegt und anschließend Messinvarianzanalysen [@luong2021; @robitzsch2022] des in beiden Stichproben überlegenen a posteriori Modells mittels konfirmatorischer Mehrgruppen-Faktorenmodelle durchgeführt.
+
+## Ergebnisse (6K)
+
+### Forschungsfrage 1
+
+```{r}
+data_grosberta <- 
+  read_csv("_data/data_grosberta_embeddings.csv") %>% 
+  # spezifität joinen
+  full_join(data %>% select(PID, spezifität))
+
+data_openai <- 
+  read_csv("_data/data_openai_embeddings.csv") %>% 
+  # spezifität joinen
+  full_join(data %>% select(PID, spezifität))
+
+# Anzahl Offener Antworten pro Person in N1
+anz_oa_n1 <- 
+  data_grosberta %>% 
+  filter(spezifität == "Fachdidaktik") %>% 
+  group_by(PID) %>% 
+  mutate(anzahl_oa = n()/16) %>% 
+  ungroup() %>% 
+  summarise(mean_anzahl_oa = mean(anzahl_oa),
+            sd_anzahl_oa = sd(anzahl_oa)) %>% 
+  pull(mean_anzahl_oa)
+
+```
+
+Die $N_1 =$ `{r} n1` Deutschlehrkräfte aus Stichprobe 1 gaben im Durschnitt `{r} round(anz_oa_n1, 2)` frei formulierte Antworten auf die Frage was ihrer Meinung nach Professionalität in der Deutsch-Fachdidaktik (Sprache) ausmacht. Alle Anworten sind im Online-Supplement vollständig abgebildet.
+
+```{r}
+#| cache: true
+#| label: fig-embeddings
+#| fig-cap: Ähnlichkeiten der offenen Antworten zu allen Items, gegliedert nach deren a priori Dimensionen (ST = strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz, KO = kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz). 
+#| fig-alt: Verteilung der Ähnlichkeiten der offenen Antworten zu allen Items
+#| fig-height: 5
+#| fig-width: 7
+#| dev: "ragg_png"
+
+data_embeddings <- 
+  data_grosberta %>% 
+  mutate(Embedding = "Ger-RoSBERTa") %>% 
+  full_join(
+    data_openai %>% 
+      mutate(Embedding = "OpenAI")) %>% 
+  mutate(Ähnlichkeit = similarity)
+    
+data_embeddings %>% 
+  filter(spezifität == "Fachdidaktik") %>% 
+  ggplot(aes(Ähnlichkeit, apriori_faktor)) +
+  geom_sina(alpha = .01) +
+  stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1)) +
+  facet_wrap(~ Embedding, scales = "free") +
+  ylab("A priori Zuordnung der Items") +
+  theme_ipsum()
+```
+
+Um zu eruieren inwiefern diese offenen Antworten Ideen der vier unter @sec-professionalitat-von-lehrkraften beschriebenen bildungswissenschaftlichen Ansätze enthalten, wurde die Ähnlichkeit aller Antworten zu allen Items des Instrumentes von Cramer et al [-@cramer2023] in zwei Transformermodellen bestimmt. Diese Ähnlichkeiten zeigten sich als unimodal und sehr ähnlich in ihren Verteiungsformen über die beiden gewählten Transformermodelle hinweg (siehe @fig-embeddings).
+
+```{r}
+#| cache: true
+#| label: tbl-embeddings
+#| tbl-cap: Deskriptive Verteilungsbeschreibung der Ähnlichkeiten der offenen Antworten zu allen Items (ST = strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz, KO = kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz). 
+
+
+data_embeddings %>% 
+  filter(spezifität == "Fachdidaktik") %>% 
+  group_by(Embedding, apriori_faktor) %>% 
+  summarize(Min = min(Ähnlichkeit),
+            Max = max(Ähnlichkeit),
+            Med = median(Ähnlichkeit),
+            MW = mean(Ähnlichkeit),
+            SD = sd(Ähnlichkeit),
+            Schiefe = skewness(Ähnlichkeit),
+            Kurtosis = kurtosis(Ähnlichkeit)) %>% 
+  ungroup() %>% 
+  tinytable::tt(digits = 2)
+```
+
+Die unterschiedlichen Mittelwerte in @fig-embeddings deuten auf eine Repräsentation der in den bildungswissenschaftlichen Professionalitätsansätzen enthaltenen Ideen in den offenen Antworten hin. Um diese auch inferenzstatistisch zu modellieren wurden bayesianische Mehrebenen-Beta-Regressionsmodelle spezifiziert, in denen die Ähnlichkeiten zwischen Itemwortlaut und Wortlaut der offenen Antwort die abhängige Variable darstellten und dummykodierte Indikatorvariablen der a priori Zuordnung der Variablen die unabhängige Variable. Um der genesteten Struktur der Daten (mehrere Antworten pro Lehrkraft) Rechnung zu tragen, wurden Random Intercepts im R-Paket brms [@bürkner2017] spezifiziert (siehe @lst-reg01), welches wiederum die probabilistische Sprach Stan [@standevelopmentteam2024] nutzt. Für alle zu schätzenden Parameter wurden nicht-informative Priorverteiltungen spezifiziert, wodurch die Punktschätzung vollständig durch die Likelihood der Daten getrieben ist [@winter2021] [@lemoine2019; @winter2021]. Die numerische Qualität der vier unabhängigen Marcov-Chain-Monte-Carlo-Samplings wurde mithilfe von Trace-Plots, $\hat{R}$-Werten sowie Bulk- und Tail-Effective-Sample-Sizes bewertet.
+
+::: {#lst-reg01}
+```{r}
+#| label: random intercept models FF1
+#| cache: true
+#| results: hide
+#| message: false
+#| echo: true
+#| eval: false
+
+reg_grosberta01 <- 
+  brm(bf(similarity ~ apriori_faktor + (1|PID),
+         phi ~ apriori_faktor + (1|PID)),
+      data = 
+        data_grosberta %>% 
+        filter(spezifität == "Fachdidaktik"),
+      cores = 4,
+      iter = 6000,
+      family = Beta(),
+      seed = 1893)
+plot(reg_grosberta01)
+pp_check(reg_grosberta01)
+summary(reg_grosberta01)
+
+reg_openai01 <- 
+  brm(bf(similarity ~ apriori_faktor + (1|PID),
+         phi ~ apriori_faktor + (1|PID)),
+      data = 
+        data_openai %>% 
+        filter(spezifität == "Fachdidaktik"),
+      cores = 4,
+      iter = 6000,
+      family = Beta(),
+      seed = 1893)
+plot(reg_openai01)
+pp_check(reg_openai01)
+summary(reg_openai01)
+
+# Da das MCMC Sampling zeitintensiv ist, werden die Objekte gespeichert
+save(reg_grosberta01, reg_openai01, 
+     file = "_data/regs01.RData")
+```
+:::
+
+Betrachtet man die bedingten Effekte dieser Modelle (siehe @tbl-conditional-effects-embeddings), fällt auf, dass deren Punktschätzung sehr gut mit den deskriptiven Ergebnissen korrespondiert und die 95%-Kredibilitätsintervalle sehr eng sind.
+
+```{r}
+#| label: tbl-conditional-effects-embeddings
+#| tbl-cap: Bedingte Effekte der Mehrebenen-Beta-Regressionsmodelle (ST = strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz, KO = kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz).
+#| cache: true
+
+# Regressionsobjekte importieren
+load("_data/regs01.RData")
+
+conditional_effects(reg_grosberta01)[[1]] %>% 
+  mutate(Embedding = "Ger-RoSBERTa",
+         `A priori Faktor` = apriori_faktor,
+         Ähnlichkeit = format(round(estimate__, 3), nsmall = 3),
+         `95%-CI` = paste0("[",
+                           format(round(lower__, 3), nsmall = 3),
+                           "; ",
+                           format(round(upper__, 3), nsmall = 3),
+                           "]")) %>% 
+  select(`A priori Faktor`, Ähnlichkeit, `95%-CI`) %>% 
+  full_join(
+    conditional_effects(reg_openai01)[[1]] %>% 
+      mutate(Embedding = "openAI",
+             `A priori Faktor` = apriori_faktor,
+             Ähnlichkeit = format(round(estimate__, 3), nsmall = 3),
+             `95%-CI` = paste0("[",
+                               format(round(lower__, 3), nsmall = 3),
+                               "; ",
+                               format(round(upper__, 3), nsmall = 3),
+                               "]")) %>% 
+      select(`A priori Faktor`, Ähnlichkeit, `95%-CI`)
+  ) %>% 
+  tt() %>% 
+  group_tt(
+    i = list(
+      "Ger-RoSBERTa Embeddings" = 1,
+      "OpenAI Embeddings" = 5
+    )
+  ) %>% 
+  style_tt(
+    i = c(1, 6),
+    align = "c"
+  )
+```
+
+### Forschungsfrage 2 {#sec-ergebnisseff2}
+
+Da Forschungsfrage 2 sich für die Replikation der Ergebnisse von Cramer et al. [-@cramer2023] interessiert, wurde wie präregistriert die Passung dreier konfirmatorischer Faktorenanalysen verglichen (siehe @sec-faktorenanalysen).
+
+```{r}
+#| label: cfa-ff2
+#| cache: true
+
+data_cfa_fachdidaktik <- 
+  data %>% 
+  filter(spezifität == "Fachdidaktik") %>%
+  select(starts_with("PUe"), starts_with("PU01")) %>%
+  mutate(PU01_01 = ifelse(PU01_01 == "", NA, PU01_01),
+         PU01_02 = ifelse(PU01_02 == "", NA, PU01_02),
+         PU01_03 = ifelse(PU01_03 == "", NA, PU01_03))
+
+cfa_mod_onedim <- 
+  "pro =~ PUe_KO1 + PUe_KO2 + PUe_KO3 + PUe_KO4 +
+          PUe_ST1 + PUe_ST2 + PUe_ST3 + PUe_ST4 +
+          PUe_BB1 + PUe_BB2 + PUe_BB3 + PUe_BB4 +
+          PUe_MR1 + PUe_MR2 + PUe_MR3 + PUe_MR4" 
+
+cfa_mod_apriori <- 
+  "kom =~ PUe_KO1 + PUe_KO2 + PUe_KO3 + PUe_KO4
+   str =~ PUe_ST1 + PUe_ST2 + PUe_ST3 + PUe_ST4
+   bio =~ PUe_BB1 + PUe_BB2 + PUe_BB3 + PUe_BB4
+   met =~ PUe_MR1 + PUe_MR2 + PUe_MR3 + PUe_MR4"
+
+cfa_mod_aposteriori <- 
+  "sh =~ PUe_BB1 + PUe_BB3 + PUe_BB4 +
+         PUe_ST3 + PUe_ST4 + PUe_KO4 + PUe_MR1
+   aw =~ PUe_KO1 + PUe_KO2 + PUe_KO3
+   rh =~ PUe_ST1 + PUe_ST2 + PUe_MR4"
+
+cfa_fit_fachd_onedim <-
+  cfa(cfa_mod_onedim, data = data_cfa_fachdidaktik)
+cfa_fit_fachd_apriori <- 
+  cfa(cfa_mod_apriori, data = data_cfa_fachdidaktik)
+cfa_fit_fachd_aposteriori <- 
+  cfa(cfa_mod_aposteriori, data = data_cfa_fachdidaktik)
+
+# anova für genesteten Vergleich
+anova_onedim_apriori <- anova(cfa_fit_fachd_onedim, cfa_fit_fachd_apriori)
+
+# custom cfa-fit print function
+fpf_la <- function(x){  
+  fm_tmp <- fitmeasures(x)
+  return(sprintf(
+          "χ² = %s, *df* = %s, RMSEA = %s, SRMR = %s, BIC = %s, AIC = %s",
+           format(round(fm_tmp[c("chisq")],1),  nsmall = 3),
+                 fm_tmp[c("df")],
+           format(round(fm_tmp[c("rmsea")],3), nsmall = 3),
+           format(round(fm_tmp[c("srmr")],3), nsmall = 3),
+           format(round(fm_tmp[c("bic")],1), nsmall = 1),
+           format(round(fm_tmp[c("aic")],1), nsmall = 1)
+  ))}
+
+# custom anova model comparison print function
+fpf_anova <- function(x, y){  
+  fm_tmp <- anova(x, y)
+  return(sprintf(
+          "Δχ² = %s, Δ*df* = %s, *p* %s",
+           format(round(fm_tmp$`Chisq diff`,3)[2], nsmall = 3),
+           format(round(fm_tmp$`Df diff`,3)[2], nsmall = 3),
+           printp(fm_tmp$`Pr(>Chisq)`[2])
+  ))}
+```
+
+Dabei zeigte sich auf den vorliegenden Daten (Stichprobe 1) passend zur präregistrierten Hypothese der beste Fit für das a-Posteriori-Modell (`{r} I(fpf_la(cfa_fit_fachd_aposteriori))`) im Vergleich zur eindimensionales Lösung (`{r} I(fpf_la(cfa_fit_fachd_onedim))`), welche wiederum dem a-priori-Modell (`{r} I(fpf_la(cfa_fit_fachd_apriori))`) signifikant unterlegen war (`{r} I(fpf_anova(cfa_fit_fachd_onedim, cfa_fit_fachd_apriori))`). Obwohl diese Ergebnisse der präregistrierten Hypothese entsprechen, muss jedoch angemerkt werden, dass auch das empirisch favorisierte Modell in einigen nicht-präregistrierten Fit-Indices (z.B. Tucker Lewis Index \[TLI\], Confirmatory Fit Index \[CFI\]) Werte aufzeigen, die auf eine mangelnde Passung hinweisen (TLI = `{r}  format(round(fitmeasures(cfa_fit_fachd_aposteriori)[c("tli")],3), nsmall = 3)`, CFI = `{r}  format(round(fitmeasures(cfa_fit_fachd_aposteriori)[c("cfi")],3), nsmall = 3)`) und zudem die Varianz-Kovarianz-Matrix der latenten Variablen des a-priori-Modells nicht positiv definit war.
+
+### Forschungsfrage 3
+
+Zur Bearbeitung der Forschungsfrage 3 wurden zwei weitere Datensätze hinzugezogen: Zum Vergleich der offen erfassten globalen und fachdidaktik-spezifischen Professionalitätsüberzeugungen wurden dieselben Regressionsmodelle wie in @sec-word-embeddings spezifiziert, jedoch die Daten von Stichprobe 1 und 2 verwendent und um Interaktionseffekte für die Domänenspezifität ergänzt (siehe @lst-reg02).
+
+::: {#lst-reg02}
+```{r}
+#| label: regressionen-ff3
+#| cache: true
+#| results: hide
+#| message: false
+#| echo: true
+#| eval: false
+
+reg_grosberta02 <- 
+  brm(bf(similarity ~ apriori_faktor*spezifität + (1|PID),
+         phi ~ apriori_faktor*spezifität + (1|PID)),
+      data = 
+        data_grosberta,
+      cores = 4,
+      iter = 6000,
+      family = Beta(),
+      seed = 1893)
+plot(reg_grosberta02)
+pp_check(reg_grosberta02)
+summary(reg_grosberta02)
+
+reg_openai02 <- 
+  brm(bf(similarity ~ apriori_faktor*spezifität + (1|PID),
+         phi ~ apriori_faktor*spezifität + (1|PID)),
+      data = 
+        data_openai,
+      cores = 4,
+      family = Beta(),
+      seed = 1893)
+plot(reg_openai02)
+pp_check(reg_openai02)
+summary(reg_openai02)
+
+# Da das MCMC Sampling zeitintensiv ist, werden die Objekte gespeichert
+save(reg_grosberta02, reg_openai02, 
+     file = "_data/regs02.RData")
+```
+:::
+
+```{r}
+#| label: Berechnung der Effektstärken
+#| cache: true
+
+regs02_d <- 
+  data_grosberta %>% 
+  mutate(embedding = "grosberta") %>% 
+  full_join(
+    data_openai %>% 
+      mutate(embedding = "openai")) %>% 
+  nest_by(embedding, apriori_faktor) %>% 
+  mutate(d = effsize::cohen.d(similarity ~ spezifität, data = data)$estimate) %>% 
+  mutate(d = -d)
+  
+regs02_d_min <- format(round(min(regs02_d$d), 2), nsmall = 2)
+regs02_d_max <- format(round(max(regs02_d$d), 2), nsmall = 2)
+regs02_d_min_of_pos <- 
+  format(round(min(regs02_d %>% filter(d > 0) %>% pull(d)), 2), nsmall = 2)
+```
+
+Die Interaktionseffekte sind in @fig-cond-eff-reg-ff3 dargestellt und zeigen im Wesentlichen eine sehr starke Überlappung der Ähnlichkeiten der offenen Antworten zu den Items der bildungswissenschaftlichen Professionalitätsansätze. Die Ähnlichkeiten scheinen also relativ unabhängig davon zu sein, ob die Lehrkräfte dazu aufgefordert wurden zu beschreiben was Professionalität im Lehrerinnen- und Lehrerberuf ausmacht (globale Professionalitätsüberzeugung) oder was Professionalität in der Fachdidaktik Deutsch (Sprache) ausmacht. Gleichzeitig fällt auf, dass die Ähnlichkeiten (mit einer Ausnahme *d* = `{r} regs02_d_min`) der Antworten auf die Frage nach den globalen Professionalitätsüberzeugungen etwas größer ausfallen (`{r} regs02_d_min_of_pos` ≤ *d* ≤ `{r} regs02_d_max`). Dies ist plausibel, da die Items von Cramer et al. [-@cramer2023], zu denen die Ähnlichkeit der offenen Antworten bestimmt wurde, ebenfalls globale Professionalitätsüberzeugungen erfassen.
+
+```{r}
+#| cache: true
+#| label: fig-cond-eff-reg-ff3
+#| fig-cap: Bedingte Effekte der Mehrebenen-Beta-Regressionsmodelle mit Interaktionseffekten für die Domänenspezifität (Breites Intervall = 95% Kredibilitätintervall, schmales Intervall = MW ± 1SD, ST = strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz, KO = kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz).
+#| fig-alt: Bedingte Effekte der Mehrebenen-Beta-Regressionsmodelle mit Interaktionseffekten für die Domänenspezifität
+#| fig-height: 5
+#| fig-width: 7
+#| dev: "ragg_png"
+
+# Import der Regressionsobjekte
+load("_data/regs02.RData")
+
+# Berechnung der conditional effects
+cond_eff_reg_grosberta02 <- 
+  conditional_effects(reg_grosberta02)[[3]] %>% 
+  mutate(Ähnlichkeit = estimate__,
+         Domänenspezifität = spezifität,
+         `A priori Faktor` = apriori_faktor)
+
+cond_eff_reg_openai02 <- 
+  conditional_effects(reg_openai02)[[3]] %>% 
+  mutate(Ähnlichkeit = estimate__,
+         Domänenspezifität = spezifität,
+         `A priori Faktor` = apriori_faktor)
+
+# Plot
+cond_eff_grosberta02_plot_ff3 <- 
+  ggplot() +
+  geom_point(data = cond_eff_reg_grosberta02,
+             aes(`A priori Faktor`, Ähnlichkeit, color = Domänenspezifität),
+             position = position_dodge(width = .5),
+             ) +
+  geom_linerange(data = cond_eff_reg_grosberta02,
+                 aes(x = `A priori Faktor`, color = Domänenspezifität,
+                     ymin = lower__, ymax = upper__),
+                 position = position_dodge(width = .5),
+                 size = 3,
+                 alpha = .3) +
+  geom_linerange(data = data_grosberta %>% 
+                   group_by(apriori_faktor, spezifität) %>% 
+                   summarize(mean_emp = mean(similarity),
+                             sd_emp = sd(similarity),
+                             mean_plus_sd = mean_emp + sd_emp,
+                             mean_minus_sd = mean_emp - sd_emp) %>% 
+                   mutate(`A priori Faktor` = apriori_faktor,
+                          Domänenspezifität = spezifität),
+                 aes(x = `A priori Faktor`, color = Domänenspezifität,
+                     ymin = mean_minus_sd, ymax = mean_plus_sd),
+                 position = position_dodge(width = .5)) +
+  ggtitle("Ger-RoSBERTa") +
+  theme_ipsum(base_family = "Arial")
+  
+cond_eff_openai02_plot_ff3 <- 
+  ggplot() +
+  geom_point(data = cond_eff_reg_openai02,
+             aes(`A priori Faktor`, Ähnlichkeit, color = Domänenspezifität),
+             position = position_dodge(width = .5),
+             ) +
+  geom_linerange(data = cond_eff_reg_openai02,
+                 aes(x = `A priori Faktor`, color = Domänenspezifität,
+                     ymin = lower__, ymax = upper__),
+                 position = position_dodge(width = .5),
+                 size = 3,
+                 alpha = .3) +
+  geom_linerange(data = data_openai %>% 
+                   group_by(apriori_faktor, spezifität) %>% 
+                   summarize(mean_emp = mean(similarity),
+                             sd_emp = sd(similarity),
+                             mean_plus_sd = mean_emp + sd_emp,
+                             mean_minus_sd = mean_emp - sd_emp) %>% 
+                   mutate(`A priori Faktor` = apriori_faktor,
+                          Domänenspezifität = spezifität),
+                 aes(x = `A priori Faktor`, color = Domänenspezifität,
+                     ymin = mean_minus_sd, ymax = mean_plus_sd),
+                 position = position_dodge(width = .5)) +
+  ggtitle("OpenAI") +
+  theme_ipsum(base_family = "Arial")
+
+cond_eff_grosberta02_plot_ff3 + cond_eff_openai02_plot_ff3 +
+  plot_layout(guides = "collect") & 
+  theme(legend.position = 'bottom') &
+  scale_color_viridis_d()
+
+```
+
+Abschließend wurden konfirmatorische Zweigruppen-Faktorenanalysen durchgeführt, um die Domänenspezifität auch auf Itemebene zu untersuchen. Dabei wurde sowohl für die a priori als auch die a posteriori Faktorenstruktur in einer Serie von Modellen sukzessive Faktorenstruktur, Ladungen, Intercepts und Residualvarianzen der Items als zwischen den Gruppen gleich restringiert (siehe @sec-faktorenanalysen).
+
+```{r}
+#| label: tbl-mgcfa-ff3
+#| tbl-cap: Fit Indices der Messinvarianzanalyse.
+#| cache: true
+
+# Import der Rohdaten aus Cramer et al (2023)
+data_original <-
+  read_spss("_data/data_original_study.sav") %>%
+  rename(
+    PUe_BB1 = f1_1,
+    PUe_BB4 = f1_2,
+    PUe_KO3 = f1_3,
+    PUe_ST1 = f1_4,
+    PUe_BB3 = f1_5,
+    PUe_KO1 = f1_6,
+    PUe_ST3 = f1_7,
+    PUe_ST2 = f1_8,
+    PUe_MR4 = f1_9,
+    PUe_KO4 = f1_10,
+    PUe_MR1 = f1_11,
+    PUe_KO2 = f1_12,
+    PUe_ST4 = f1_13,
+    PUe_MR2 = f1_14,
+    PUe_MR3 = f1_15,
+    PUe_BB2 = f1_16
+  ) %>% 
+  mutate(spezifität = "Global")
+
+data_mgcfa <- 
+  full_join(data_original %>% 
+              select(starts_with("PUe_"), "spezifität") %>% 
+              mutate(across(-spezifität, as.numeric)),
+            data %>%
+              filter(spezifität == "Fachdidaktik") %>% 
+              select(starts_with("PUe_"), "spezifität")) %>% 
+  as_tibble()
+
+
+# MGCFA mit  a priori Struktur
+mgcfa_apriori_konfigural <- 
+  cfa(cfa_mod_apriori, 
+      group = "spezifität",
+      data = data_mgcfa)
+
+mgcfa_apriori_metrisch <- 
+  cfa(cfa_mod_apriori, 
+      group = "spezifität",
+      group.equal = c("loadings"),
+      data = data_mgcfa)
+
+mgcfa_apriori_skalar <- 
+  cfa(cfa_mod_apriori, 
+      group = "spezifität",
+      group.equal = c("loadings", "intercepts"),
+      data = data_mgcfa)
+
+mgcfa_apriori_strikt <- 
+  cfa(cfa_mod_apriori, 
+      group = "spezifität",
+      group.equal = c("loadings", "intercepts", "residuals"),
+      data = data_mgcfa)
+
+# Tabelle mit lavaanExtra::nice_fit() erstellen
+nicetable_mgcfa_apriori_ff3 <- 
+  nice_fit(
+  list(
+    "Konfigural" = mgcfa_apriori_konfigural,
+    "Metrisch" = mgcfa_apriori_metrisch,
+    "Skalar" = mgcfa_apriori_skalar,
+    "Strikt" = mgcfa_apriori_strikt
+    ),
+  nice_table = T,
+  guidelines = F)
+
+
+# MGCFA mit  a posteriori Struktur
+mgcfa_aposteriori_konfigural <- 
+  cfa(cfa_mod_aposteriori, 
+      group = "spezifität",
+      data = data_mgcfa)
+
+mgcfa_aposteriori_metrisch <- 
+  cfa(cfa_mod_aposteriori, 
+      group = "spezifität",
+      group.equal = c("loadings"),
+      data = data_mgcfa)
+
+mgcfa_aposteriori_skalar <- 
+  cfa(cfa_mod_aposteriori, 
+      group = "spezifität",
+      group.equal = c("loadings", "intercepts"),
+      data = data_mgcfa)
+
+mgcfa_aposteriori_strikt <- 
+  cfa(cfa_mod_aposteriori, 
+      group = "spezifität",
+      group.equal = c("loadings", "intercepts", "residuals"),
+      data = data_mgcfa)
+
+# Tabelle mit lavaanExtra::nice_fit() erstellen
+nicetable_mgcfa_aposteriori_ff3 <- 
+  nice_fit(
+  list(
+    "Konfigural" = mgcfa_aposteriori_konfigural,
+    "Metrisch" = mgcfa_aposteriori_metrisch,
+    "Skalar" = mgcfa_aposteriori_skalar,
+    "Strikt" = mgcfa_aposteriori_strikt
+    ),
+  nice_table = T,
+  guidelines = F)
+
+
+# Individuelle Anpassung der Tabelle
+## apriori teil
+nicetable_mgcfa_apriori_ff3$body$dataset %>% 
+  select(-`RMSEA [90% CI]`, -p, -chi2.df, -TLI, -AIC) %>% 
+  rename(Modell = Model,
+         `χ²` = chi2) %>%
+  mutate(`P(Δχ²)` = c("-", 
+                        format(
+                          round(anova(mgcfa_apriori_konfigural,
+                                    mgcfa_apriori_metrisch)$`Pr(>Chisq)`[2],
+                                3), 
+                          nsmall = 3),
+                        format(
+                          round(anova(mgcfa_apriori_metrisch,
+                                      mgcfa_apriori_skalar)$`Pr(>Chisq)`[2],
+                                3), 
+                          nsmall = 3),
+                                               format(
+                          round(anova(mgcfa_apriori_skalar,
+                                      mgcfa_apriori_strikt)$`Pr(>Chisq)`[2],
+                                3), 
+                          nsmall = 3)),
+         Struktur = "A priori"
+         ) %>% 
+  full_join(
+    nicetable_mgcfa_aposteriori_ff3$body$dataset %>% 
+      select(-`RMSEA [90% CI]`, -p, -chi2.df, -TLI, -AIC) %>% 
+      rename(Modell = Model,
+             `χ²` = chi2) %>%
+      mutate(`P(Δχ²)` = c("-", 
+                            format(
+                              round(anova(mgcfa_aposteriori_konfigural,
+                                        mgcfa_aposteriori_metrisch)$`Pr(>Chisq)`[2],
+                                    3), 
+                              nsmall = 3),
+                            format(
+                              round(anova(mgcfa_aposteriori_metrisch,
+                                          mgcfa_aposteriori_skalar)$`Pr(>Chisq)`[2],
+                                    3), 
+                              nsmall = 3),
+                                                   format(
+                              round(anova(mgcfa_aposteriori_skalar,
+                                          mgcfa_aposteriori_strikt)$`Pr(>Chisq)`[2],
+                                    3), 
+                              nsmall = 3)),
+             Struktur = "A posteriori")) %>% 
+  relocate(Struktur) %>% 
+  tt(width = c(.2, .2, rep(.7/6,6))) %>% 
+  style_tt(fontsize = .8)
+```
+
+Die Ergebnisse dieser Messinvarianzanalyse in @tbl-mgcfa-ff3 können als Evidenz für die Annahme metrischer Skaleninvarianz (gleiche Item-Intercepts) interpretiert werden. Die Items wiesen also vorliegend die gleichen Ladungen auf, unabhängig davon, ob nach einer professionellen Lehrperson oder einer professionellen Lehrperson in der Deutsch-Fachdidaktik (Sprache) gefragt wurde, jedoch unterschiedliche Intercepts und Residualvarianen.
+
+## Diskussion (8K)
+
+Die vorliegende Arbeit hat drei zentrale Ergebnisse: Erstens enthalten offene Antworten von Lehrkräten auf die Frage, was »Professionalität« in der Deutsch-Fachdidaktik (Sprache) bzw. im Allgemeinen ausmacht, die Ideen bildungswissenschaftlicher Professionalitätsansätze (strukturtheoretischer, metareflektiver, kompetenzorientierter und berufsbiographischer Ansatz). Zweitens konnte im Instrument mit geschlossenen Items zur Erfassung von Professionalitätsüberzeugungen von Cramer at al. [-@cramer2023] der Ausschluss einer eindimensionalen und einer a priori Struktur (vier Faktoren für strukturtheoretischen, metareflektiven, kompetenzorientierten und berufsbiographischen Ansatz) repliziert werden. Die von Cramer at al. [-@cramer2023] explorativ gefundene Struktur zeigte die vergleichsweise besten Fit-Indizes, die jedoch unter den klassischen Benchmarks für akzeptable oder gute Modellpassungen liegen [@mcneish2021]. Drittens zeigen offen wie geschlossen erfasste Professionalitätsüberzeugungen sowohl Aspekte von Domänenspezifität als auch von Domänengeneralität: So sind etwa die offenen Antworten auf den globalen Stimulus (*Wir interessieren uns nun dafür, was Ihrer Ansicht nach »Professionalität« einer Lehrperson ausmacht*) im Durchschnitt etwas ähnlicher zu den geschlossenen Items als die Antworten, die auf den fachdidaktik-spezifischen Stimulus folgen.\
+Als zentrale Stärke der vorliegenden Studie kann sicher deren externe Validität hervorgehoben werden: Forschungsfragen 1 & 2 wurden mit einer Stichprobe von aktiven Deutschlehrkräften bearbeitet, deren Größe a priori mit einer Poweranalyse determiniert wurde. Für Forschungsfrage 3 wurde zudem eine repräsentative Stichprobe von Lehrkräften reanalysiert. Dem stehen Schwächen der Studie - insbesondere die Konstruktvalidität betreffend - entgehen. Und zwar sowohl bzgl. der geschlossenen als auch der offenen Erfassung der Professionalitätsüberzeugungen: Die schwache absolute Ausprägung der Fit-Indices der konfirmatischen Faktorenanalysen lassen offenen, inwiefern die in Forschungsfrage 3 angestellten Vergleiche globaler und domänenspezifischer Professionalitätsüberzeugungen überhaupt sinnvoll sind, da unklar bleibt inwiefern die von Cramer et al. [-@cramer2023] postulierten Faktoren von überhaupt existieren. Die Konstruktvalidität der für das Sentence Embedding verwendeten Transformermodellen ist vielfach sehr positiv beschrieben worden XXX. Nichts desto trotz wäre eine explizite Überprüfung im vorliegenden Fall wünschenswert. So könnten geschulte Kodiererinnen und Kodierer die offenen Antworten (siehe Open Data dieser Studie) inhaltsanalytisch den bildungswissenschaftlichen Professionalitätsansätzen zuordnen und dann prüfen, inwiefern diese mit den Embeddings prädiziert werden können. Die vorliegende Evidenz für die Ähnlichkeit offen erfasster Professionalitätsüberzeugungen zu bildungswissenschaftlichen Ansätzen motiviert im Lichte der im Theorieteil beschriebenen Filter-, Rahmungs- und Handlungsleitungsfunktion von Überzeugungen [@fives2012] auch anwendungsbezogenere Folgeforschung: So stellt sich etwa die Frage ob Professionalitätsüberzeugungen die aus bildungswissenschaftlicher Sicht eher als überholt zu bewerten sind (z.B. eine bestimmte "Lehrerinnen- und Lehrerpersönlichkeit" als zentrales Merkmal von Professionalität) im Sinne eines Bestätigungsfehlers ["Confirmation Bias", @bohrer2025; @nickerson1998; @masnick2009] zur abwertenden Evaluation von empirischen Ergebnissen der Studien führen, die einen anderen Professionalitätsansatz verfolgen. Auch die Wahl von Veranstaltungen in der ersten Phase der Lehrerbildung oder Entscheidungen für oder gegen bestimmte Fortbildungen in der dritten Phase könnte durch die Handlungsleitungsfunktion von Professionalitätsüberzeugungen beeinflusst werden. Ließe sich Evidenz für diese Funktion der Professionalisierungsüberzeugungen finden, wäre ein konsequenter nächster Schritt zu untersuchen inwiefern Awarenessinterventionen die darauf aufmerksam machen, dass Individuen solche Überzeugungen besitzen und diese ihre Entscheidungen beeinflussen oder andere Deboiasingn Strategien wie "Consider the Opposite" [@vanbrussel2020] zu einem weniger durch die Überzeugungen verzerrten und reflektierteren Handeln führen.
+
+# Anhang
+
+### Wortlaut der Items {#sec-wortlaut-der-items}
+
+#### Offene Items
+
+-   Wir interessieren uns nun dafür, was Ihrer Ansicht nach »Professionalität« in der Deutsch-Fachdidaktik (Sprache) ausmacht. Bitte antworten Sie in ganzen Sätzen um Missverständnisse zu vermeiden und formulieren Sie möglichst drei Aspekte. Eine »professionelle« Lehrperson in der Deutsch-Fachdidaktik (Sprache) ...
+-   Wir interessieren uns nun dafür, was Ihrer Ansicht nach »Professionalität« einer Lehrperson ausmacht. Bitte antworten Sie in ganzen Sätzen um Missverständnisse zu vermeiden und formulieren Sie möglichst drei Aspekte. Eine »professionelle« Lehrperson ...
+
+#### Geschlossene Items {#sec-geschlossene-items}
+
+siehe XXX

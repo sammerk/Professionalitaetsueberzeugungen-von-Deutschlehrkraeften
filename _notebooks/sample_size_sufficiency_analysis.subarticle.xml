@@ -1,0 +1,632 @@
+<sub-article article-type="notebook" id="nb-4">
+<front-stub>
+<title-group>
+<article-title>Sample Size Sufficiency Analysis</article-title>
+</title-group>
+</front-stub>
+
+<body>
+<sec id="data-import">
+  <title>Data Import</title>
+  <sec specific-use="notebook-content">
+  <code language="r script">library(simsem)
+  </code>
+  <boxed-text>
+    <preformat>Loading required package: lavaan</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>Warning: package 'lavaan' was built under R version 4.4.1</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>This is lavaan 0.6-19
+lavaan is FREE software! Please report any bugs.</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat> </preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>#################################################################</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>This is simsem 0.5-16</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>simsem is BETA software! Please report any bugs.</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>simsem was first developed at the University of Kansas Center for</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>Research Methods and Data Analysis, under NSF Grant 1053160.</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>#################################################################</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>
+Attaching package: 'simsem'</preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>The following object is masked from 'package:lavaan':
+
+    inspect</preformat>
+  </boxed-text>
+  <code language="r script">library(haven)
+library(lavaan)
+library(tidyverse)
+  </code>
+  <boxed-text>
+    <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     </preformat>
+  </boxed-text>
+  <boxed-text>
+    <preformat>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</preformat>
+  </boxed-text>
+  <code language="r script">library(semPlot)
+library(semTools)
+  </code>
+  <boxed-text>
+    <preformat> 
+###############################################################################
+This is semTools 0.5-6
+All users of R (or SEM) are invited to submit functions or ideas for functions.
+###############################################################################
+
+Attaching package: 'semTools'
+
+The following object is masked from 'package:readr':
+
+    clipboard</preformat>
+  </boxed-text>
+  <code language="r script">data2023 &lt;- read_spss(&quot;../_data/data_original_study.sav&quot;) %&gt;% 
+  mutate(bio_sh_f1_01 = f1_1,
+         bio_sh_f1_02 = f1_2,
+         kom_aw_f1_03 = f1_3,
+         str_rh_f1_04 = f1_4,
+         bio_sh_f1_05 = f1_5,
+         kom_aw_f1_06 = f1_6,
+         str_sh_f1_07 = f1_7,
+         str_rh_f1_08 = f1_8,
+         met_rh_f1_09 = f1_9,
+         kom_sh_f1_10 = f1_10,
+         met_sh_f1_11 = f1_11,
+         kom_aw_f1_12 = f1_12,
+         str_sh_f1_13 = f1_13,
+         met_00_f1_14 = f1_14,
+         met_00_f1_15 = f1_15,
+         bio_00_f1_16 = f1_16)
+  </code>
+  </sec>
+</sec>
+<sec id="cfa-with-all-items">
+  <title>CFA with all items</title>
+  <sec id="cfa-a-priori-vs-efa-determinined-model">
+    <title>CFA a priori vs EFA determinined model</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">cfa_mod_onedim &lt;- 
+  &quot;kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12
+          + str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13
+          + bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05 + bio_00_f1_16
+          + met_rh_f1_09 + met_sh_f1_11 + met_00_f1_14 + met_00_f1_15&quot;
+cfa_fit_onedim &lt;- cfa(cfa_mod_onedim, 
+                       data = data2023,
+                       sampling.weights = &quot;weight0&quot;)
+semPaths(cfa_fit_onedim)
+    </code>
+    <graphic mimetype="image" mime-subtype="png" xlink:href="sample_size_sufficiency_analysis_files/figure-jats/unnamed-chunk-2-1.png" />
+    <code language="r script">fitmeasures(cfa_fit_onedim, 
+            c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+    </code>
+    <boxed-text>
+      <preformat>  chisq      df  pvalue     cfi     tli   rmsea    srmr 
+306.647 104.000   0.000   0.919   0.906   0.069   0.048 </preformat>
+    </boxed-text>
+    <code language="r script">cfa_mod_apriori &lt;- 
+  &quot;kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12
+   str =~ str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13
+   bio =~ bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05 + bio_00_f1_16
+   met =~ met_rh_f1_09 + met_sh_f1_11 + met_00_f1_14 + met_00_f1_15&quot;
+cfa_fit_apriori &lt;- cfa(cfa_mod_apriori, 
+                       data = data2023,
+                       sampling.weights = &quot;weight0&quot;)
+    </code>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_object_post_check():  
+   covariance matrix of latent variables is not positive definite ; use 
+   lavInspect(fit, &quot;cov.lv&quot;) to investigate.</preformat>
+    </boxed-text>
+    <code language="r script">semPaths(cfa_fit_apriori)
+    </code>
+    <graphic mimetype="image" mime-subtype="png" xlink:href="sample_size_sufficiency_analysis_files/figure-jats/unnamed-chunk-2-2.png" />
+    <code language="r script">fitmeasures(cfa_fit_apriori, 
+            c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+    </code>
+    <boxed-text>
+      <preformat>  chisq      df  pvalue     cfi     tli   rmsea    srmr 
+266.553  98.000   0.000   0.933   0.917   0.065   0.047 </preformat>
+    </boxed-text>
+    <code language="r script">cfa_mod_aposteriori &lt;- 
+  &quot;aw =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_aw_f1_12
+   rh =~ str_rh_f1_04 + str_rh_f1_08 + met_rh_f1_09
+   sh =~ bio_sh_f1_01 + bio_sh_f1_05 + bio_sh_f1_02 + str_sh_f1_07 +
+         str_sh_f1_13 + kom_sh_f1_10 + met_sh_f1_11&quot;
+cfa_fit_aposteriori &lt;- cfa(cfa_mod_aposteriori, 
+                       data = data2023,
+                       sampling.weights = &quot;weight0&quot;)
+semPaths(cfa_fit_aposteriori)
+    </code>
+    <graphic mimetype="image" mime-subtype="png" xlink:href="sample_size_sufficiency_analysis_files/figure-jats/unnamed-chunk-2-3.png" />
+    <code language="r script">fitmeasures(cfa_fit_aposteriori, 
+            c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+    </code>
+    <boxed-text>
+      <preformat>  chisq      df  pvalue     cfi     tli   rmsea    srmr 
+140.601  62.000   0.000   0.956   0.945   0.056   0.040 </preformat>
+    </boxed-text>
+    <code language="r script">summary(compareFit(cfa_fit_onedim, cfa_fit_apriori, cfa_fit_aposteriori,
+             nested = F))
+    </code>
+    <boxed-text>
+      <preformat>####################### Model Fit Indices ###########################
+                    chisq.scaled df.scaled pvalue.scaled rmsea.robust
+cfa_fit_aposteriori      93.675†        62          .006        .043†
+cfa_fit_apriori         180.290         98          .000        .055 
+cfa_fit_onedim          203.876        104          .000        .060 
+                    cfi.robust tli.robust  srmr        aic        bic
+cfa_fit_aposteriori      .973†      .966† .040† 15168.828† 15285.084†
+cfa_fit_apriori          .950       .939  .047  18151.152  18303.487 
+cfa_fit_onedim           .938       .929  .048  18179.246  18307.529 </preformat>
+    </boxed-text>
+    <code language="r script">summary(compareFit(cfa_fit_onedim, cfa_fit_apriori,
+             nested = T))
+    </code>
+    <boxed-text>
+      <preformat>################### Nested Model Comparison #########################
+
+Scaled Chi-Squared Difference Test (method = &quot;satorra.bentler.2001&quot;)
+
+lavaan-&gt;unknown():  
+   lavaan NOTE: The &quot;Chisq&quot; column contains standard test statistics, not the 
+   robust test that should be reported per model. A robust difference test is 
+   a function of two standard (not robust) statistics.
+                 Df   AIC   BIC  Chisq Chisq diff Df diff Pr(&gt;Chisq)   
+cfa_fit_apriori  98 18151 18304 266.55                                 
+cfa_fit_onedim  104 18179 18308 306.65     20.856       6   0.001947 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+####################### Model Fit Indices ###########################
+                chisq.scaled df.scaled pvalue.scaled rmsea.robust cfi.robust
+cfa_fit_apriori     180.290†        98          .000        .055†      .950†
+cfa_fit_onedim      203.876        104          .000        .060       .938 
+                tli.robust  srmr        aic        bic
+cfa_fit_apriori      .939† .047† 18151.152† 18303.487†
+cfa_fit_onedim       .929  .048  18179.246  18307.529 
+
+################## Differences in Fit Indices #######################
+                                 df.scaled rmsea.robust cfi.robust tli.robust
+cfa_fit_onedim - cfa_fit_apriori         6        0.004     -0.012      -0.01
+                                  srmr    aic   bic
+cfa_fit_onedim - cfa_fit_apriori 0.001 28.094 4.041</preformat>
+    </boxed-text>
+    <code language="r script">summary(compareFit(cfa_fit_onedim, cfa_fit_aposteriori,
+             nested = T))
+    </code>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;unknown():  
+   some models are based on a different set of observed variables</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>################### Nested Model Comparison #########################
+
+Scaled Chi-Squared Difference Test (method = &quot;satorra.bentler.2001&quot;)
+
+lavaan-&gt;unknown():  
+   lavaan NOTE: The &quot;Chisq&quot; column contains standard test statistics, not the 
+   robust test that should be reported per model. A robust difference test is 
+   a function of two standard (not robust) statistics.
+                     Df   AIC   BIC  Chisq Chisq diff Df diff Pr(&gt;Chisq)    
+cfa_fit_aposteriori  62 15169 15285 140.60                                  
+cfa_fit_onedim      104 18179 18308 306.65     110.06      42  5.207e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+####################### Model Fit Indices ###########################
+                    chisq.scaled df.scaled pvalue.scaled rmsea.robust
+cfa_fit_aposteriori      93.675†        62          .006        .043†
+cfa_fit_onedim          203.876        104          .000        .060 
+                    cfi.robust tli.robust  srmr        aic        bic
+cfa_fit_aposteriori      .973†      .966† .040† 15168.828† 15285.084†
+cfa_fit_onedim           .938       .929  .048  18179.246  18307.529 
+
+################## Differences in Fit Indices #######################
+                                     df.scaled rmsea.robust cfi.robust
+cfa_fit_onedim - cfa_fit_aposteriori        42        0.016     -0.035
+                                     tli.robust  srmr      aic      bic
+cfa_fit_onedim - cfa_fit_aposteriori     -0.037 0.008 3010.418 3022.445</preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+</sec>
+<sec id="cfa-with-a-posterior-items-only">
+  <title>CFA with a posterior items only</title>
+  <sec id="cfa-a-priori-vs-efa-determinined-model-1">
+    <title>CFA a priori vs EFA determinined model</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">cfa_mod_onedim_selected &lt;- 
+  &quot;kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12 +
+          str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13 +
+          bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05 +
+          met_rh_f1_09 + met_sh_f1_11&quot;
+cfa_fit_onedim_selected &lt;-
+  cfa(cfa_mod_onedim_selected,
+      data = data2023,
+      sampling.weights = &quot;weight0&quot;)
+semPaths(cfa_fit_onedim_selected)
+    </code>
+    <graphic mimetype="image" mime-subtype="png" xlink:href="sample_size_sufficiency_analysis_files/figure-jats/unnamed-chunk-3-1.png" />
+    <code language="r script">fitmeasures(cfa_fit_onedim_selected, 
+            c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+    </code>
+    <boxed-text>
+      <preformat>  chisq      df  pvalue     cfi     tli   rmsea    srmr 
+226.238  65.000   0.000   0.911   0.893   0.078   0.052 </preformat>
+    </boxed-text>
+    <code language="r script">cfa_mod_apriori_selected &lt;- 
+  &quot;kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12
+   str =~ str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13
+   bio =~ bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05
+   met =~ met_rh_f1_09 + met_sh_f1_11&quot;
+cfa_fit_apriori_selected &lt;-
+  cfa(cfa_mod_apriori_selected,
+      data = data2023,
+      sampling.weights = &quot;weight0&quot;)
+    </code>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_object_post_check():  
+   covariance matrix of latent variables is not positive definite ; use 
+   lavInspect(fit, &quot;cov.lv&quot;) to investigate.</preformat>
+    </boxed-text>
+    <code language="r script">semPaths(cfa_fit_apriori_selected)
+    </code>
+    <graphic mimetype="image" mime-subtype="png" xlink:href="sample_size_sufficiency_analysis_files/figure-jats/unnamed-chunk-3-2.png" />
+    <code language="r script">fitmeasures(cfa_fit_apriori_selected, 
+            c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+    </code>
+    <boxed-text>
+      <preformat>  chisq      df  pvalue     cfi     tli   rmsea    srmr 
+178.401  59.000   0.000   0.934   0.913   0.071   0.050 </preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+</sec>
+<sec id="sample-size-sufficiency-analysis">
+  <title>Sample Size Sufficiency Analysis</title>
+  <sec id="one-dim-true-vs.-a-priori">
+    <title>One Dim (=TRUE) vs. a priori</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">nsim &lt;- 10000
+n &lt;- 100
+
+mo_onedim_gen_onedim_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim,
+      generate = cfa_fit_onedim)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">mo_apriori_gen_onedim_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori,
+      generate = cfa_fit_onedim)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">anova(mo_onedim_gen_onedim_sim, mo_apriori_gen_onedim_sim)
+    </code>
+    <boxed-text>
+      <preformat>$summary
+            chisq  df      aic      bic      rmsea       cfi       tli
+Object 1 101.8968  98 8922.730 9048.066 0.01422615 0.9930658 0.9959773
+Object 2 108.1955 104 8917.029 9022.575 0.01418060 0.9927558 0.9959190
+               srmr
+Object 1 0.03721827
+Object 2 0.03805302
+
+$diff
+   chisq diff       df diff    power diff      aic diff      bic diff 
+ 6.298636e+00  6.000000e+00  6.280000e-02 -5.701364e+00 -2.549127e+01 
+   rmsea diff      cfi diff      tli diff     srmr diff 
+-4.554581e-05 -3.099267e-04 -5.835568e-05  8.347531e-04 
+
+$varyParam
+NULL</preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+  <sec id="one-dim-vs.-a-priori-true">
+    <title>One Dim vs. a priori (=TRUE)</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">mo_onedim_gen_apriori_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim,
+      generate = cfa_fit_apriori)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   str bio</preformat>
+    </boxed-text>
+    <code language="r script">mo_apriori_gen_apriori &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori,
+      generate = cfa_fit_apriori)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   str bio</preformat>
+    </boxed-text>
+    <code language="r script">anova(mo_onedim_gen_apriori_sim, mo_apriori_gen_apriori)
+    </code>
+    <boxed-text>
+      <preformat>$summary
+            chisq  df      aic      bic      rmsea       cfi       tli
+Object 1 101.9483  98 8921.891 9047.227 0.01424315 0.9930550 0.9959354
+Object 2 127.2751 104 8935.218 9040.764 0.03062972 0.9790587 0.9765173
+               srmr
+Object 1 0.03768845
+Object 2 0.04213129
+
+$diff
+  chisq diff      df diff   power diff     aic diff     bic diff   rmsea diff 
+25.326835161  6.000000000  0.907800000 13.326835161 -6.463069038  0.016386566 
+    cfi diff     tli diff    srmr diff 
+-0.013996275 -0.019418091  0.004442846 
+
+$varyParam
+NULL</preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+  <sec id="one-dim-true-vs.-a-posteriori">
+    <title>One Dim (=TRUE) vs. a posteriori</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">mo_onedim_gen_onedim_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim,
+      generate = cfa_fit_onedim)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">mo_aposteriori_gen_onedim_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_onedim)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">anova(mo_onedim_gen_onedim_sim, mo_aposteriori_gen_onedim_sim)
+    </code>
+    <boxed-text>
+      <preformat>$summary
+             chisq  df      aic      bic      rmsea       cfi       tli
+Object 1  64.25121  62 7484.994 7580.645 0.01470251 0.9929399 0.9967555
+Object 2 108.19545 104 8917.029 9022.575 0.01418060 0.9927558 0.9959190
+               srmr
+Object 1 0.03698886
+Object 2 0.03805302
+
+$diff
+   chisq diff       df diff    power diff      aic diff      bic diff 
+ 4.394424e+01  4.200000e+01  7.850000e-02  1.432035e+03  1.441930e+03 
+   rmsea diff      cfi diff      tli diff     srmr diff 
+-5.219057e-04 -1.840974e-04 -8.365452e-04  1.064162e-03 
+
+$varyParam
+NULL</preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+  <sec id="one-dim-vs.-a-posteriori-true">
+    <title>One Dim vs. a posteriori (=TRUE)</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">mo_onedimsel_gen_aposteriorisel_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim_selected,
+      generate = cfa_fit_aposteriori)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">mo_aposteriori_gen_aposteriori_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_aposteriori)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">anova(mo_onedimsel_gen_aposteriorisel_sim, mo_aposteriori_gen_aposteriori_sim)
+    </code>
+    <boxed-text>
+      <preformat>$summary
+             chisq df      aic      bic      rmsea       cfi       tli
+Object 1  64.18641 62 7440.911 7536.562 0.01477120 0.9933051 0.9969924
+Object 2 109.65576 65 7480.380 7566.136 0.05718587 0.9477924 0.9373689
+               srmr
+Object 1 0.03716268
+Object 2 0.05001960
+
+$diff
+ chisq diff     df diff  power diff    aic diff    bic diff  rmsea diff 
+45.46934825  3.00000000  0.99990000 39.46934825 29.57439615  0.04241467 
+   cfi diff    tli diff   srmr diff 
+-0.04551273 -0.05962354  0.01285693 
+
+$varyParam
+NULL</preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+  <sec id="a-priori-vs.-a-posteriori-true">
+    <title>A priori vs. a posteriori (=TRUE)</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">mo_apriori_gen_aposteriorisel_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori_selected,
+      generate = cfa_fit_aposteriori)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">mo_aposteriorisel_gen_aposteriori_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_aposteriori)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <code language="r script">## Percentage of correct decision for non-nested models via BIC AIC
+sum(mo_apriori_gen_aposteriorisel_sim@fit$bic &gt; 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$bic)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 1</preformat>
+    </boxed-text>
+    <code language="r script">sum(mo_apriori_gen_aposteriorisel_sim@fit$aic &gt; 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$aic)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 0.9986</preformat>
+    </boxed-text>
+    <code language="r script">sum(mo_apriori_gen_aposteriorisel_sim@fit$srmr &gt; 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$srmr)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 0.9966</preformat>
+    </boxed-text>
+    <code language="r script">sum(mo_apriori_gen_aposteriorisel_sim@fit$rmsea &gt; 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$rmsea)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 0.9808</preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+  <sec id="a-priori-true-vs.-a-posteriori">
+    <title>A priori (=TRUE) vs. a posteriori</title>
+    <sec specific-use="notebook-content">
+    <code language="r script">mo_aposteriori_gen_apriorisel_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_apriori_selected)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   kom met</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   str met</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   bio met</preformat>
+    </boxed-text>
+    <code language="r script">mo_apriorisel_gen_apriorisel_sim &lt;-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori_selected,
+      generate = cfa_fit_apriori_selected)
+    </code>
+    <boxed-text>
+      <preformat>Progress tracker is not available when 'multicore' is TRUE.</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   kom met</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   str met</preformat>
+    </boxed-text>
+    <boxed-text>
+      <preformat>Warning: lavaan-&gt;lav_start_check_cov():  
+   starting values imply a correlation larger than 1; variables involved are: 
+   bio met</preformat>
+    </boxed-text>
+    <code language="r script">## Percentage of correct decision for non-nested models via BIC AIC
+sum(mo_aposteriori_gen_apriorisel_sim@fit$bic &gt; 
+    mo_apriorisel_gen_apriorisel_sim@fit$bic)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 0.4088</preformat>
+    </boxed-text>
+    <code language="r script">sum(mo_aposteriori_gen_apriorisel_sim@fit$aic &gt; 
+    mo_apriorisel_gen_apriorisel_sim@fit$aic)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 0.8657</preformat>
+    </boxed-text>
+    <code language="r script">sum(mo_aposteriori_gen_apriorisel_sim@fit$srmr &gt; 
+    mo_apriorisel_gen_apriorisel_sim@fit$srmr)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 0.9616</preformat>
+    </boxed-text>
+    <code language="r script">sum(mo_aposteriori_gen_apriorisel_sim@fit$rmsea &gt; 
+    mo_apriorisel_gen_apriorisel_sim@fit$rmsea)/nsim
+    </code>
+    <boxed-text>
+      <preformat>[1] 0.8036</preformat>
+    </boxed-text>
+    </sec>
+  </sec>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>

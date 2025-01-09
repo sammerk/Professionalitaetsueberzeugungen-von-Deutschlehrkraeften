@@ -1,0 +1,248 @@
+---
+title: "Sample Size Sufficiency Analysis"
+---
+
+## Data Import
+```{r}
+#| cache: true
+library(simsem)
+library(haven)
+library(lavaan)
+library(tidyverse)
+library(semPlot)
+library(semTools)
+data2023 <- read_spss("../_data/data_original_study.sav") %>% 
+  mutate(bio_sh_f1_01 = f1_1,
+         bio_sh_f1_02 = f1_2,
+         kom_aw_f1_03 = f1_3,
+         str_rh_f1_04 = f1_4,
+         bio_sh_f1_05 = f1_5,
+         kom_aw_f1_06 = f1_6,
+         str_sh_f1_07 = f1_7,
+         str_rh_f1_08 = f1_8,
+         met_rh_f1_09 = f1_9,
+         kom_sh_f1_10 = f1_10,
+         met_sh_f1_11 = f1_11,
+         kom_aw_f1_12 = f1_12,
+         str_sh_f1_13 = f1_13,
+         met_00_f1_14 = f1_14,
+         met_00_f1_15 = f1_15,
+         bio_00_f1_16 = f1_16)
+```
+
+
+## CFA with all items
+### CFA a priori vs EFA determinined model
+```{r}
+#| cache: true
+cfa_mod_onedim <- 
+  "kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12
+          + str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13
+          + bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05 + bio_00_f1_16
+          + met_rh_f1_09 + met_sh_f1_11 + met_00_f1_14 + met_00_f1_15"
+cfa_fit_onedim <- cfa(cfa_mod_onedim, 
+                       data = data2023,
+                       sampling.weights = "weight0")
+semPaths(cfa_fit_onedim)
+fitmeasures(cfa_fit_onedim, 
+            c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "srmr"))
+
+cfa_mod_apriori <- 
+  "kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12
+   str =~ str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13
+   bio =~ bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05 + bio_00_f1_16
+   met =~ met_rh_f1_09 + met_sh_f1_11 + met_00_f1_14 + met_00_f1_15"
+cfa_fit_apriori <- cfa(cfa_mod_apriori, 
+                       data = data2023,
+                       sampling.weights = "weight0")
+semPaths(cfa_fit_apriori)
+fitmeasures(cfa_fit_apriori, 
+            c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "srmr"))
+
+cfa_mod_aposteriori <- 
+  "aw =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_aw_f1_12
+   rh =~ str_rh_f1_04 + str_rh_f1_08 + met_rh_f1_09
+   sh =~ bio_sh_f1_01 + bio_sh_f1_05 + bio_sh_f1_02 + str_sh_f1_07 +
+         str_sh_f1_13 + kom_sh_f1_10 + met_sh_f1_11"
+cfa_fit_aposteriori <- cfa(cfa_mod_aposteriori, 
+                       data = data2023,
+                       sampling.weights = "weight0")
+semPaths(cfa_fit_aposteriori)
+fitmeasures(cfa_fit_aposteriori, 
+            c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "srmr"))
+
+summary(compareFit(cfa_fit_onedim, cfa_fit_apriori, cfa_fit_aposteriori,
+             nested = F))
+summary(compareFit(cfa_fit_onedim, cfa_fit_apriori,
+             nested = T))
+summary(compareFit(cfa_fit_onedim, cfa_fit_aposteriori,
+             nested = T))
+```
+
+
+## CFA with a posterior items only
+### CFA a priori vs EFA determinined model
+```{r}
+#| cache: true
+cfa_mod_onedim_selected <- 
+  "kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12 +
+          str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13 +
+          bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05 +
+          met_rh_f1_09 + met_sh_f1_11"
+cfa_fit_onedim_selected <-
+  cfa(cfa_mod_onedim_selected,
+      data = data2023,
+      sampling.weights = "weight0")
+semPaths(cfa_fit_onedim_selected)
+fitmeasures(cfa_fit_onedim_selected, 
+            c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "srmr"))
+
+cfa_mod_apriori_selected <- 
+  "kom =~ kom_aw_f1_03 + kom_aw_f1_06 + kom_sh_f1_10 + kom_aw_f1_12
+   str =~ str_rh_f1_04 + str_sh_f1_07 + str_rh_f1_08 + str_sh_f1_13
+   bio =~ bio_sh_f1_01 + bio_sh_f1_02 + bio_sh_f1_05
+   met =~ met_rh_f1_09 + met_sh_f1_11"
+cfa_fit_apriori_selected <-
+  cfa(cfa_mod_apriori_selected,
+      data = data2023,
+      sampling.weights = "weight0")
+semPaths(cfa_fit_apriori_selected)
+fitmeasures(cfa_fit_apriori_selected, 
+            c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "srmr"))
+```
+
+## Sample Size Sufficiency Analysis
+### One Dim (=TRUE) vs. a priori 
+```{r}
+#| cache: true
+nsim <- 10000
+n <- 100
+
+mo_onedim_gen_onedim_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim,
+      generate = cfa_fit_onedim)
+
+mo_apriori_gen_onedim_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori,
+      generate = cfa_fit_onedim)
+
+anova(mo_onedim_gen_onedim_sim, mo_apriori_gen_onedim_sim)
+```
+
+### One Dim vs. a priori (=TRUE)
+```{r}
+#| cache: true
+mo_onedim_gen_apriori_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim,
+      generate = cfa_fit_apriori)
+
+mo_apriori_gen_apriori <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori,
+      generate = cfa_fit_apriori)
+
+anova(mo_onedim_gen_apriori_sim, mo_apriori_gen_apriori)
+```
+
+### One Dim (=TRUE) vs. a posteriori
+```{r}
+#| cache: true
+mo_onedim_gen_onedim_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim,
+      generate = cfa_fit_onedim)
+
+mo_aposteriori_gen_onedim_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_onedim)
+
+anova(mo_onedim_gen_onedim_sim, mo_aposteriori_gen_onedim_sim)
+```
+
+
+### One Dim vs. a posteriori (=TRUE) 
+```{r}
+#| cache: true
+mo_onedimsel_gen_aposteriorisel_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_onedim_selected,
+      generate = cfa_fit_aposteriori)
+
+mo_aposteriori_gen_aposteriori_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_aposteriori)
+
+anova(mo_onedimsel_gen_aposteriorisel_sim, mo_aposteriori_gen_aposteriori_sim)
+```
+
+
+### A priori vs. a posteriori (=TRUE) 
+```{r}
+#| cache: true
+mo_apriori_gen_aposteriorisel_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori_selected,
+      generate = cfa_fit_aposteriori)
+
+mo_aposteriorisel_gen_aposteriori_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_aposteriori)
+
+## Percentage of correct decision for non-nested models via BIC AIC
+sum(mo_apriori_gen_aposteriorisel_sim@fit$bic > 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$bic)/nsim
+
+sum(mo_apriori_gen_aposteriorisel_sim@fit$aic > 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$aic)/nsim
+
+sum(mo_apriori_gen_aposteriorisel_sim@fit$srmr > 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$srmr)/nsim
+
+sum(mo_apriori_gen_aposteriorisel_sim@fit$rmsea > 
+    mo_aposteriorisel_gen_aposteriori_sim@fit$rmsea)/nsim
+```
+
+### A priori (=TRUE) vs. a posteriori
+```{r}
+#| cache: true
+mo_aposteriori_gen_apriorisel_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_aposteriori,
+      generate = cfa_fit_apriori_selected)
+
+mo_apriorisel_gen_apriorisel_sim <-
+  sim(nsim,
+      n = 200, multicore = TRUE,
+      model = cfa_fit_apriori_selected,
+      generate = cfa_fit_apriori_selected)
+
+## Percentage of correct decision for non-nested models via BIC AIC
+sum(mo_aposteriori_gen_apriorisel_sim@fit$bic > 
+    mo_apriorisel_gen_apriorisel_sim@fit$bic)/nsim
+
+sum(mo_aposteriori_gen_apriorisel_sim@fit$aic > 
+    mo_apriorisel_gen_apriorisel_sim@fit$aic)/nsim
+
+sum(mo_aposteriori_gen_apriorisel_sim@fit$srmr > 
+    mo_apriorisel_gen_apriorisel_sim@fit$srmr)/nsim
+
+sum(mo_aposteriori_gen_apriorisel_sim@fit$rmsea > 
+    mo_apriorisel_gen_apriorisel_sim@fit$rmsea)/nsim
+```

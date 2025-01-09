@@ -1,0 +1,36 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[H]
+
+\caption{\label{fig-embeddings}Ähnlichkeiten der offenen Antworten zu
+allen Items, gegliedert nach deren a priori Dimensionen (ST =
+strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz, KO =
+kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz).}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-embeddings-1.png}}
+
+}
+
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[H]
+
+\caption{\label{fig-cond-eff-reg-ff3}Bedingte Effekte der
+Mehrebenen-Beta-Regressionsmodelle mit Interaktionseffekten für die
+Domänenspezifität (Breites Intervall = 95\% Kredibilitätintervall,
+schmales Intervall = MW ± 1SD, ST = strukturtheoretischer Ansatz, MR =
+Metareflektiver Ansatz, KO = kompetenzorientierter Ansatz, BB =
+berufsbiographischer Ansatz).}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-cond-eff-reg-ff3-1.png}}
+
+}
+
+\end{figure*}
