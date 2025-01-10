@@ -45,6 +45,7 @@ date: last-modified
 lang: de
 bibliography: references.bib
 csl: apa.csl
+notebook-links: false
 ---
 
 ## Einleitung
