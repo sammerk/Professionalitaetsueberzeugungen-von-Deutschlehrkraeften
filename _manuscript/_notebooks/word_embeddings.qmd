@@ -1,5 +1,6 @@
 ---
 title: "Word Embeddings"
+chunk-numbering: false
 ---
 
 
@@ -134,8 +135,9 @@ save(similarities_to_items, file = "_data/similarities_to_items.RData")
 ## Interaktive Visualisierung 
 
 ```{r}
-#| message: false
-#| warning: false
+#| label: tbl-Antwort-Item-Ähnlichkeit
+#| tbl-cap: z-transformierte Ähnlichkeiten der offenen Antworten zu den Items (ST = strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz,KO = kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz). 
+#|  
 library(reactablefmtr)
 library(tidyverse)
 library(htmlwidgets)
@@ -198,13 +200,9 @@ rendered_reactable <- data_reactable %>%
     style = list(maxWidth = 920),
   ) %>% 
   google_font(font_family = "Source Sans Pro")
-```
 
-Interactive table output
-```{r}
-#| label: tbl-Antwort-Item-Ähnlichkeit
-#| tbl-cap: z-transformierte Ähnlichkeiten der offenen Antworten zu den Items (ST = strukturtheoretischer Ansatz, MR = Metareflektiver Ansatz, KO = kompetenzorientierter Ansatz, BB = berufsbiographischer Ansatz). 
-#| cache: true
+
+
 htmlwidgets::prependContent(
   rendered_reactable,
   htmlDependency(

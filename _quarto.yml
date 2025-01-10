@@ -15,7 +15,6 @@ format:
     comments:
       hypothesis: false
   apaquarto-docx: default
-  pdf: default
 
 execute:
   freeze: auto
