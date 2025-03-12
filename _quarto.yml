@@ -1,5 +1,8 @@
 project:
   type: manuscript
+  resources: 
+    - "Tabelle_Item_Antwort_Aehnlichkeiten.html"
+    - "Tabelle_Item_Antwort_Aehnlichkeiten_files/"
 
 manuscript:
   article: index.qmd
@@ -14,6 +17,7 @@ format:
   html:
     comments:
       hypothesis: false
+    number-sections: false
   apaquarto-docx: default
 
 execute:
