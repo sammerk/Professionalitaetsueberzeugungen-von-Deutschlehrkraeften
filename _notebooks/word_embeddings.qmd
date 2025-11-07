@@ -1,8 +1,11 @@
 ---
 title: "Word Embeddings"
-chunk-numbering: false
 ---
-
+<style>
+  .cell-decorator {
+  display: none;
+}
+</style>
 
 ## Import scientific usefiles
 ```{r}
@@ -208,7 +211,7 @@ htmlwidgets::prependContent(
   htmlDependency(
     name = "font-awesome",
     version = "6.7.2",
-    src = "/Users/samuelmerk/Nextcloud/PubConfTalks/PubConfTalks2024/Pub24/02_Notyet_submitted/Professionalitaetsueberzeugungen-von-Deutschlehrkraeften/_notebooks/fontawesome-free-6.7.2-web",
+    src = "/Users/samuelmerk/Nextcloud/PubConfTalks/PubConfTalks2025/Pub25/01_Submitted/Professionalitaetsueberzeugungen-von-Deutschlehrkraeften/_notebooks/fontawesome-free-6.7.2-web",
     script = "js/all.min.js",
     stylesheet = "css/all.min.css"
   ),

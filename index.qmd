@@ -45,8 +45,13 @@ lang: de
 bibliography: references.bib
 csl: zfb.csl
 notebook-links: global
-notebook-view: true
+notebook-view: true  
 ---
+<style>
+  .cell-decorator {
+  display: none;
+}
+</style>
 
 ## Einleitung
 

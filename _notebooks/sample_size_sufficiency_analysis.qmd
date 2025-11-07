@@ -1,7 +1,11 @@
 ---
 title: "Sample Size Sufficiency Analysis"
 ---
-
+<style>
+  .cell-decorator {
+  display: none;
+}
+</style>
 ## Data Import
 ```{r}
 #| cache: true
