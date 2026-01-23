@@ -42,7 +42,7 @@ keywords:
   - Natural Language Processing
 date: last-modified
 lang: de
-bibliography: references.bib
+bibliography: references_anonym.bib
 csl: zfb.csl
 notebook-links: global
 notebook-view: true  
